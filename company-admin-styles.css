@@ -1,0 +1,951 @@
+/* 회사 관리자 페이지 전용 스타일 */
+
+.company-admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* 사이드바 */
+.company-sidebar {
+    width: 280px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.company-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.company-logo i {
+    font-size: 2rem;
+    color: #4fc3f7;
+}
+
+.company-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: block;
+}
+
+.admin-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 1rem 0;
+}
+
+.nav-item {
+    margin-bottom: 0.25rem;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.nav-item.active .nav-link {
+    background: rgba(79, 195, 247, 0.2);
+    border-left-color: #4fc3f7;
+    color: white;
+}
+
+.nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.back-to-main {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.back-to-main:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+/* 메인 콘텐츠 */
+.company-main {
+    flex: 1;
+    margin-left: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+.company-header {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-left h1 {
+    font-size: 1.8rem;
+    color: #1e3c72;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.company-credit-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #e3f2fd;
+    color: #1565c0;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+}
+
+.admin-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    background: #f8f9fa;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+/* 섹션 */
+.company-section {
+    display: none;
+    padding: 2rem;
+    flex: 1;
+}
+
+.company-section.active {
+    display: block;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.section-title h2 {
+    font-size: 1.5rem;
+    color: #1e3c72;
+    margin-bottom: 0.5rem;
+}
+
+.section-title p {
+    color: #666;
+    margin: 0;
+}
+
+.section-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* 통계 카드 */
+.company-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.company-stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.company-stat-card:nth-child(1) .stat-icon {
+    background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+}
+
+.company-stat-card:nth-child(2) .stat-icon {
+    background: linear-gradient(45deg, #ab47bc, #9c27b0);
+}
+
+.company-stat-card:nth-child(3) .stat-icon {
+    background: linear-gradient(45deg, #ff9800, #f57c00);
+}
+
+.company-stat-card:nth-child(4) .stat-icon {
+    background: linear-gradient(45deg, #66bb6a, #4caf50);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e3c72;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.stat-change {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.stat-change.positive {
+    color: #4caf50;
+}
+
+.stat-change.negative {
+    color: #f44336;
+}
+
+.stat-change.neutral {
+    color: #999;
+}
+
+/* 대시보드 개요 */
+.dashboard-overview {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.overview-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.overview-card h3 {
+    margin-bottom: 1.5rem;
+    color: #1e3c72;
+}
+
+/* 부서별 사용 현황 */
+.department-usage {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.usage-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.department-info {
+    display: flex;
+    justify-content: space-between;
+    min-width: 150px;
+}
+
+.department-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.usage-count {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.usage-bar {
+    flex: 1;
+    height: 8px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.usage-fill {
+    height: 100%;
+    background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+    transition: width 0.3s;
+}
+
+/* 인기 에이전트 */
+.popular-agents {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.agent-usage-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.agent-usage-item .agent-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+.agent-info {
+    flex: 1;
+}
+
+.agent-name {
+    font-weight: 500;
+    color: #333;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.usage-stats {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.usage-percentage {
+    font-weight: bold;
+    color: #4fc3f7;
+}
+
+/* 직원 테이블 */
+.employees-table {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.employees-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.employees-table th,
+.employees-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.employees-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #1e3c72;
+}
+
+.employees-table tr:hover {
+    background: #f8f9fa;
+}
+
+.employee-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.profile-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.status-active {
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.status-inactive {
+    color: #f44336;
+    font-weight: 500;
+}
+
+.btn-action {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+    margin: 0 0.125rem;
+}
+
+.btn-action:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+/* 권한 관리 */
+.permissions-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.permission-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.permission-card h3 {
+    margin-bottom: 1.5rem;
+    color: #1e3c72;
+}
+
+.department-permissions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.department-item {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.department-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.department-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.permission-count {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.permission-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.permission-item label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+/* 개별 직원 권한 */
+.individual-permissions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.employee-permission {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.employee-permission .employee-info {
+    flex: 1;
+}
+
+.employee-name {
+    font-weight: 500;
+    color: #333;
+    display: block;
+}
+
+.employee-role {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.permission-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.allowed-agents {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* 에이전트 설정 */
+.agents-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.category-section h3 {
+    color: #1e3c72;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+.agents-list {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.agent-setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s;
+}
+
+.agent-setting-item:last-child {
+    border-bottom: none;
+}
+
+.agent-setting-item:hover {
+    background: #f8f9fa;
+}
+
+.agent-setting-item.active {
+    background: #e3f2fd;
+}
+
+.agent-setting-item .agent-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.agent-setting-item .agent-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+.agent-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.agent-name {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.agent-cost {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* 토글 스위치 */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #4fc3f7;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* 크레딧 관리 */
+.credits-overview {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+}
+
+.credit-summary-card,
+.credit-usage-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.credit-summary-card h3,
+.credit-usage-card h3 {
+    margin-bottom: 1.5rem;
+    color: #1e3c72;
+}
+
+.credit-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.credit-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.stat-label {
+    color: #666;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #1e3c72;
+    font-size: 1.1rem;
+}
+
+.employee-usage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.employee-usage {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.employee-usage .employee-info {
+    flex: 1;
+}
+
+.employee-usage .employee-name {
+    font-weight: 500;
+    color: #333;
+    display: block;
+}
+
+.department {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.usage-amount {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 2;
+}
+
+.credits-used {
+    min-width: 100px;
+    text-align: right;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* 분석 대시보드 */
+.analytics-dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.analytics-chart,
+.analytics-insights {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.analytics-chart h3,
+.analytics-insights h3 {
+    margin-bottom: 1.5rem;
+    color: #1e3c72;
+}
+
+.chart-placeholder {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+}
+
+.chart-placeholder i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.insight-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.insight-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.insight-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+}
+
+.insight-icon.success {
+    background: linear-gradient(45deg, #4caf50, #66bb6a);
+}
+
+.insight-icon.info {
+    background: linear-gradient(45deg, #2196f3, #42a5f5);
+}
+
+.insight-icon.warning {
+    background: linear-gradient(45deg, #ff9800, #ffb74d);
+}
+
+.insight-content {
+    flex: 1;
+}
+
+.insight-title {
+    font-weight: 500;
+    color: #333;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.insight-description {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 195, 247, 0.3);
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #666;
+    border: 2px solid #eee;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+    border-color: #ddd;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .company-sidebar {
+        width: 250px;
+    }
+    
+    .company-main {
+        margin-left: 250px;
+    }
+    
+    .company-stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .dashboard-overview {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .company-sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+    
+    .company-main {
+        margin-left: 0;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .header-right {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .permissions-grid,
+    .credits-overview,
+    .analytics-dashboard {
+        grid-template-columns: 1fr;
+    }
+    
+    .permission-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .employees-table {
+        overflow-x: auto;
+    }
+}

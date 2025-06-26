@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지 - AI 에이전트 허브</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- 사이드바 -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-cog"></i>
+                <span>관리자 패널</span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a href="#" onclick="showSection('dashboard')" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>대시보드</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('users')" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>회원 관리</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('agents')" class="nav-link">
+                            <i class="fas fa-robot"></i>
+                            <span>AI 에이전트 관리</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('credits')" class="nav-link">
+                            <i class="fas fa-coins"></i>
+                            <span>크레딧 관리</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('logs')" class="nav-link">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>로그 및 통계</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('settings')" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>시스템 설정</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="index.html" class="back-to-main">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>메인으로 돌아가기</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="admin-main">
+            <!-- 헤더 -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <h1 id="page-title">대시보드</h1>
+                </div>
+                <div class="header-right">
+                    <div class="admin-info">
+                        <i class="fas fa-user-shield"></i>
+                        <span>관리자</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 대시보드 섹션 -->
+            <section id="dashboard-section" class="admin-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">1,247</div>
+                            <div class="stat-label">총 회원 수</div>
+                            <div class="stat-change positive">+12 (이번 주)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">3,429</div>
+                            <div class="stat-label">AI 에이전트 실행 횟수</div>
+                            <div class="stat-change positive">+234 (오늘)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">156,789</div>
+                            <div class="stat-label">크레딧 사용량</div>
+                            <div class="stat-change positive">+5,432 (오늘)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-won-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">₩2,340,000</div>
+                            <div class="stat-label">이번 달 매출</div>
+                            <div class="stat-change positive">+18.5%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <h3>일별 사용자 활동</h3>
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line"></i>
+                            <p>차트 데이터가 여기에 표시됩니다</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>인기 AI 에이전트</h3>
+                        <div class="agent-ranking">
+                            <div class="ranking-item">
+                                <span class="rank">1</span>
+                                <span class="agent-name">회의록 자동화 AI</span>
+                                <span class="usage-count">1,234회</span>
+                            </div>
+                            <div class="ranking-item">
+                                <span class="rank">2</span>
+                                <span class="agent-name">이메일 작성 AI</span>
+                                <span class="usage-count">987회</span>
+                            </div>
+                            <div class="ranking-item">
+                                <span class="rank">3</span>
+                                <span class="agent-name">리뷰 분석 AI</span>
+                                <span class="usage-count">756회</span>
+                            </div>
+                            <div class="ranking-item">
+                                <span class="rank">4</span>
+                                <span class="agent-name">블로그 생성기</span>
+                                <span class="usage-count">654회</span>
+                            </div>
+                            <div class="ranking-item">
+                                <span class="rank">5</span>
+                                <span class="agent-name">PPT 생성기</span>
+                                <span class="usage-count">543회</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 회원 관리 섹션 -->
+            <section id="users-section" class="admin-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>회원 관리</h2>
+                        <p>전체 회원 정보를 조회하고 관리할 수 있습니다</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i class="fas fa-download"></i>
+                            내보내기
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <select>
+                            <option>모든 계정 유형</option>
+                            <option>개인 계정</option>
+                            <option>회사 계정</option>
+                            <option>관리자 계정</option>
+                        </select>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="이름 또는 이메일 검색">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                
+                <div class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th>계정 유형</th>
+                                <th>가입일</th>
+                                <th>크레딧</th>
+                                <th>상태</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1001</td>
+                                <td>홍길동</td>
+                                <td>hong@example.com</td>
+                                <td><span class="badge badge-individual">개인</span></td>
+                                <td>2024-06-01</td>
+                                <td>1,250</td>
+                                <td><span class="status-active">활성</span></td>
+                                <td>
+                                    <button class="btn-action" onclick="editUser(1001)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action" onclick="suspendUser(1001)">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1002</td>
+                                <td>김철수</td>
+                                <td>kim@company.com</td>
+                                <td><span class="badge badge-company">회사</span></td>
+                                <td>2024-05-28</td>
+                                <td>5,000</td>
+                                <td><span class="status-active">활성</span></td>
+                                <td>
+                                    <button class="btn-action" onclick="editUser(1002)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action" onclick="suspendUser(1002)">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1003</td>
+                                <td>이영희</td>
+                                <td>lee@example.com</td>
+                                <td><span class="badge badge-individual">개인</span></td>
+                                <td>2024-06-15</td>
+                                <td>750</td>
+                                <td><span class="status-suspended">정지</span></td>
+                                <td>
+                                    <button class="btn-action" onclick="editUser(1003)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action" onclick="activateUser(1003)">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button class="page-btn" disabled>이전</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn">다음</button>
+                </div>
+            </section>
+
+            <!-- AI 에이전트 관리 섹션 -->
+            <section id="agents-section" class="admin-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>AI 에이전트 관리</h2>
+                        <p>AI 에이전트의 설정과 프롬프트를 관리할 수 있습니다</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-primary" onclick="addNewAgent()">
+                            <i class="fas fa-plus"></i>
+                            새 에이전트 추가
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="agents-grid">
+                    <div class="agent-admin-card">
+                        <div class="agent-admin-header">
+                            <div class="agent-admin-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="agent-admin-info">
+                                <h3>회의록 자동화 AI</h3>
+                                <p>일반사무 카테고리</p>
+                            </div>
+                            <div class="agent-admin-status">
+                                <span class="status-active">활성</span>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-admin-details">
+                            <div class="detail-item">
+                                <span class="label">크레딧 단가:</span>
+                                <span class="value">15 크레딧</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">사용 모델:</span>
+                                <span class="value">GPT-4</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">이번 달 사용:</span>
+                                <span class="value">1,234회</span>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-admin-actions">
+                            <button class="btn-action" onclick="editPrompt('meeting-notes')">
+                                <i class="fas fa-edit"></i>
+                                프롬프트 수정
+                            </button>
+                            <button class="btn-action" onclick="changeModel('meeting-notes')">
+                                <i class="fas fa-brain"></i>
+                                모델 변경
+                            </button>
+                            <button class="btn-action" onclick="toggleAgent('meeting-notes')">
+                                <i class="fas fa-power-off"></i>
+                                비활성화
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-admin-card">
+                        <div class="agent-admin-header">
+                            <div class="agent-admin-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="agent-admin-info">
+                                <h3>이메일 작성 AI</h3>
+                                <p>일반사무 카테고리</p>
+                            </div>
+                            <div class="agent-admin-status">
+                                <span class="status-active">활성</span>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-admin-details">
+                            <div class="detail-item">
+                                <span class="label">크레딧 단가:</span>
+                                <span class="value">10 크레딧</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">사용 모델:</span>
+                                <span class="value">Claude-4-Sonnet</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">이번 달 사용:</span>
+                                <span class="value">987회</span>
+                            </div>
+                        </div>
+                        
+                        <div class="agent-admin-actions">
+                            <button class="btn-action" onclick="editPrompt('email-writer')">
+                                <i class="fas fa-edit"></i>
+                                프롬프트 수정
+                            </button>
+                            <button class="btn-action" onclick="changeModel('email-writer')">
+                                <i class="fas fa-brain"></i>
+                                모델 변경
+                            </button>
+                            <button class="btn-action" onclick="toggleAgent('email-writer')">
+                                <i class="fas fa-power-off"></i>
+                                비활성화
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 크레딧 관리 섹션 -->
+            <section id="credits-section" class="admin-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>크레딧 관리</h2>
+                        <p>크레딧 패키지와 결제 현황을 관리할 수 있습니다</p>
+                    </div>
+                </div>
+                
+                <div class="credit-management-grid">
+                    <div class="credit-card">
+                        <h3>크레딧 패키지 관리</h3>
+                        <div class="package-list">
+                            <div class="package-item">
+                                <div class="package-info">
+                                    <span class="package-name">기본 패키지</span>
+                                    <span class="package-details">100 크레딧 - 9,900원</span>
+                                </div>
+                                <div class="package-actions">
+                                    <button class="btn-action">수정</button>
+                                    <button class="btn-action">삭제</button>
+                                </div>
+                            </div>
+                            <div class="package-item">
+                                <div class="package-info">
+                                    <span class="package-name">인기 패키지</span>
+                                    <span class="package-details">300 크레딧 - 27,000원 (+30 보너스)</span>
+                                </div>
+                                <div class="package-actions">
+                                    <button class="btn-action">수정</button>
+                                    <button class="btn-action">삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="addPackage()">
+                            <i class="fas fa-plus"></i>
+                            새 패키지 추가
+                        </button>
+                    </div>
+                    
+                    <div class="credit-card">
+                        <h3>결제 현황</h3>
+                        <div class="payment-stats">
+                            <div class="payment-stat">
+                                <span class="stat-label">오늘 결제</span>
+                                <span class="stat-value">₩234,000</span>
+                            </div>
+                            <div class="payment-stat">
+                                <span class="stat-label">이번 달 결제</span>
+                                <span class="stat-value">₩2,340,000</span>
+                            </div>
+                            <div class="payment-stat">
+                                <span class="stat-label">실패한 결제</span>
+                                <span class="stat-value">12건</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 로그 및 통계 섹션 -->
+            <section id="logs-section" class="admin-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>로그 및 통계</h2>
+                        <p>시스템 로그와 사용 통계를 확인할 수 있습니다</p>
+                    </div>
+                </div>
+                
+                <div class="logs-grid">
+                    <div class="log-card">
+                        <h3>최근 활동 로그</h3>
+                        <div class="log-list">
+                            <div class="log-item">
+                                <span class="log-time">14:35</span>
+                                <span class="log-message">홍길동님이 회의록 자동화 AI를 실행했습니다</span>
+                                <span class="log-type success">성공</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">14:32</span>
+                                <span class="log-message">김철수님이 크레딧 300개를 구매했습니다</span>
+                                <span class="log-type info">결제</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">14:28</span>
+                                <span class="log-message">이영희님의 계정이 정지되었습니다</span>
+                                <span class="log-type warning">경고</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">14:25</span>
+                                <span class="log-message">시스템 백업이 완료되었습니다</span>
+                                <span class="log-type success">시스템</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="log-card">
+                        <h3>에러 로그</h3>
+                        <div class="log-list">
+                            <div class="log-item">
+                                <span class="log-time">13:45</span>
+                                <span class="log-message">AI 에이전트 실행 중 타임아웃 발생</span>
+                                <span class="log-type error">에러</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">12:30</span>
+                                <span class="log-message">결제 API 연결 실패</span>
+                                <span class="log-type error">에러</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 시스템 설정 섹션 -->
+            <section id="settings-section" class="admin-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>시스템 설정</h2>
+                        <p>플랫폼의 전반적인 설정을 관리할 수 있습니다</p>
+                    </div>
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="setting-card">
+                        <h3>API 설정</h3>
+                        <div class="setting-group">
+                            <label>OpenAI API 키</label>
+                            <input type="password" value="sk-..." readonly>
+                            <button class="btn-action">수정</button>
+                        </div>
+                        <div class="setting-group">
+                            <label>Claude API 키</label>
+                            <input type="password" value="sk-ant-..." readonly>
+                            <button class="btn-action">수정</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-card">
+                        <h3>시스템 설정</h3>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" checked>
+                                신규 회원 자동 승인
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>
+                                <input type="checkbox" checked>
+                                이메일 알림 활성화
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>최대 동시 접속자 수</label>
+                            <input type="number" value="1000">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>

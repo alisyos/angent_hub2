@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 에이전트 허브 플랫폼</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-robot"></i>
+                <span>AI 에이전트 허브</span>
+            </div>
+            <div class="nav-menu">
+                <div class="nav-item">
+                    <span class="credit-info">
+                        <i class="fas fa-coins"></i>
+                        <span id="credit-amount">1,250</span> 크레딧
+                    </span>
+                </div>
+                <div class="nav-item dropdown">
+                    <i class="fas fa-user-circle"></i>
+                    <span>홍길동</span>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="showProfile()">프로필 관리</a>
+                        <a href="#" onclick="showCreditManagement()">크레딧 관리</a>
+                        <a href="#" onclick="logout()">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="dashboard" id="dashboard">
+            <header class="dashboard-header">
+                <h1>AI 에이전트 대시보드</h1>
+                <p>업무 효율성을 높이는 다양한 AI 에이전트를 활용해보세요</p>
+                <button class="credit-charge-btn" onclick="showCreditCharge()">
+                    <i class="fas fa-plus"></i>
+                    크레딧 충전
+                </button>
+            </header>
+
+            <div class="categories">
+                <div class="category-section">
+                    <h2>
+                        <i class="fas fa-briefcase"></i>
+                        일반사무
+                    </h2>
+                    <div class="agent-grid">
+                        <div class="agent-card" onclick="openAgent('meeting-notes')">
+                            <div class="agent-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <h3>회의록 자동화 AI</h3>
+                            <p>회의 내용을 체계적인 회의록으로 자동 변환</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>15 크레딧</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" onclick="openAgent('email-writer')">
+                            <div class="agent-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h3>이메일 작성 AI</h3>
+                            <p>목적에 맞는 전문적인 이메일 자동 작성</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>10 크레딧</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" onclick="openAgent('ppt-generator')">
+                            <div class="agent-icon">
+                                <i class="fas fa-presentation"></i>
+                            </div>
+                            <h3>AI PPT 슬라이드 생성기</h3>
+                            <p>내용을 바탕으로 전문적인 프레젠테이션 생성</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>25 크레딧</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" onclick="openAgent('voice-document')">
+                            <div class="agent-icon">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            <h3>음성파일 기반 문서 자동화</h3>
+                            <p>음성 파일을 다양한 문서 형태로 변환</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>20 크레딧</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <h2>
+                        <i class="fas fa-bullhorn"></i>
+                        마케팅/광고
+                    </h2>
+                    <div class="agent-grid">
+                        <div class="agent-card" onclick="openAgent('review-analysis')">
+                            <div class="agent-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>리뷰 분석 AI</h3>
+                            <p>고객 리뷰를 분석하여 인사이트 제공</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>18 크레딧</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" onclick="openAgent('keyword-analysis')">
+                            <div class="agent-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h3>키워드 분석</h3>
+                            <p>키워드 트렌드와 경쟁 상황 분석</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>22 크레딧</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" onclick="openAgent('sns-event')">
+                            <div class="agent-icon">
+                                <i class="fas fa-calendar-star"></i>
+                            </div>
+                            <h3>SNS 이벤트 기획 AI</h3>
+                            <p>효과적인 SNS 이벤트 기획안 생성</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>30 크레딧</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" onclick="openAgent('ad-analysis')">
+                            <div class="agent-icon">
+                                <i class="fas fa-ad"></i>
+                            </div>
+                            <h3>광고 문구 분석 및 제안</h3>
+                            <p>광고 효과 분석 및 개선안 제안</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>28 크레딧</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <h2>
+                        <i class="fas fa-pen-fancy"></i>
+                        콘텐츠 제작
+                    </h2>
+                    <div class="agent-grid">
+                        <div class="agent-card" onclick="openAgent('card-news')">
+                            <div class="agent-icon">
+                                <i class="fas fa-images"></i>
+                            </div>
+                            <h3>AI 카드뉴스 생성기</h3>
+                            <p>매력적인 카드뉴스 콘텐츠 자동 생성</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>35 크레딧</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-card" onclick="openAgent('blog-generator')">
+                            <div class="agent-icon">
+                                <i class="fas fa-blog"></i>
+                            </div>
+                            <h3>AI 블로그 생성기</h3>
+                            <p>SEO 최적화된 블로그 포스팅 자동 생성</p>
+                            <div class="agent-credit">
+                                <i class="fas fa-coins"></i>
+                                <span>25 크레딧</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 로그인 페이지 -->
+        <div class="login-page" id="login-page" style="display: none;">
+            <div class="login-container">
+                <div class="login-header">
+                    <i class="fas fa-robot"></i>
+                    <h1>AI 에이전트 허브</h1>
+                    <p>업무 효율성을 높이는 AI 솔루션</p>
+                </div>
+                
+                <div class="login-form">
+                    <div class="form-tabs">
+                        <button class="tab-btn active" onclick="showLoginTab()">로그인</button>
+                        <button class="tab-btn" onclick="showRegisterTab()">회원가입</button>
+                    </div>
+                    
+                    <div class="tab-content" id="login-tab">
+                        <form>
+                            <div class="form-group">
+                                <label>이메일</label>
+                                <input type="email" placeholder="이메일을 입력하세요">
+                            </div>
+                            <div class="form-group">
+                                <label>비밀번호</label>
+                                <input type="password" placeholder="비밀번호를 입력하세요">
+                            </div>
+                            <button type="submit" class="btn-primary">로그인</button>
+                        </form>
+                        
+                        <div class="social-login">
+                            <p>또는 소셜 계정으로 로그인</p>
+                            <div class="social-buttons">
+                                <button class="social-btn google">
+                                    <i class="fab fa-google"></i>
+                                    Google
+                                </button>
+                                <button class="social-btn naver">
+                                    <i class="fab fa-n"></i>
+                                    네이버
+                                </button>
+                                <button class="social-btn kakao">
+                                    <i class="fab fa-k"></i>
+                                    카카오
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="login-links">
+                            <a href="#">비밀번호 찾기</a>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="register-tab" style="display: none;">
+                        <form>
+                            <div class="form-group">
+                                <label>계정 유형</label>
+                                <select onchange="toggleCompanyFields(this.value)">
+                                    <option value="individual">개인 계정</option>
+                                    <option value="company">회사 계정</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>이름</label>
+                                <input type="text" placeholder="이름을 입력하세요">
+                            </div>
+                            <div class="form-group">
+                                <label>이메일</label>
+                                <input type="email" placeholder="이메일을 입력하세요">
+                            </div>
+                            <div class="form-group">
+                                <label>비밀번호</label>
+                                <input type="password" placeholder="비밀번호를 입력하세요">
+                            </div>
+                            <div class="form-group">
+                                <label>비밀번호 확인</label>
+                                <input type="password" placeholder="비밀번호를 다시 입력하세요">
+                            </div>
+                            
+                            <div class="company-fields" style="display: none;">
+                                <div class="form-group">
+                                    <label>회사명</label>
+                                    <input type="text" placeholder="회사명을 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label>사업자번호</label>
+                                    <input type="text" placeholder="사업자번호를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label>부서</label>
+                                    <input type="text" placeholder="부서를 입력하세요">
+                                </div>
+                                <div class="form-group">
+                                    <label>직급</label>
+                                    <input type="text" placeholder="직급을 입력하세요">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary">회원가입</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI 에이전트 실행 페이지 -->
+        <div class="agent-page" id="agent-page" style="display: none;">
+            <div class="agent-container">
+                <div class="agent-header">
+                    <button class="back-btn" onclick="goBack()">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <div class="agent-info">
+                        <div class="agent-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div>
+                            <h2 id="agent-title">회의록 자동화 AI</h2>
+                            <p id="agent-description">회의 내용을 체계적인 회의록으로 자동 변환</p>
+                        </div>
+                    </div>
+                    <div class="credit-info">
+                        <span class="credit-required">필요 크레딧: <strong id="required-credits">15</strong></span>
+                        <span class="credit-balance">보유 크레딧: <strong>1,250</strong></span>
+                    </div>
+                </div>
+                
+                <div class="agent-content">
+                    <div class="input-section">
+                        <h3>입력 정보</h3>
+                        <div class="form-group">
+                            <label>회의 내용</label>
+                            <textarea placeholder="회의 내용을 직접 입력하거나 파일을 업로드하세요"></textarea>
+                            <button class="file-upload-btn">
+                                <i class="fas fa-upload"></i>
+                                파일 업로드
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <label>자료 설명</label>
+                            <input type="text" placeholder="회의 자료에 대한 간단한 설명을 입력하세요">
+                        </div>
+                        <div class="form-group">
+                            <label>회의록 양식</label>
+                            <select>
+                                <option>표준 회의록</option>
+                                <option>간단 회의록</option>
+                                <option>상세 회의록</option>
+                            </select>
+                        </div>
+                        
+                        <button class="execute-btn">
+                            <i class="fas fa-play"></i>
+                            AI 에이전트 실행
+                        </button>
+                    </div>
+                    
+                    <div class="output-section">
+                        <h3>결과</h3>
+                        <div class="result-placeholder">
+                            <i class="fas fa-robot"></i>
+                            <p>AI 에이전트를 실행하면 결과가 여기에 표시됩니다</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 크레딧 충전 페이지 -->
+        <div class="credit-page" id="credit-page" style="display: none;">
+            <div class="credit-container">
+                <div class="page-header">
+                    <button class="back-btn" onclick="goBack()">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2>크레딧 충전</h2>
+                </div>
+                
+                <div class="credit-packages">
+                    <h3>크레딧 패키지 선택</h3>
+                    <div class="package-grid">
+                        <div class="package-card" onclick="selectPackage(100, 9900)">
+                            <div class="package-amount">100 크레딧</div>
+                            <div class="package-price">9,900원</div>
+                            <div class="package-per-credit">99원/크레딧</div>
+                        </div>
+                        <div class="package-card popular" onclick="selectPackage(300, 27000)">
+                            <div class="package-badge">인기</div>
+                            <div class="package-amount">300 크레딧</div>
+                            <div class="package-price">27,000원</div>
+                            <div class="package-per-credit">90원/크레딧</div>
+                            <div class="package-bonus">+30 보너스 크레딧</div>
+                        </div>
+                        <div class="package-card" onclick="selectPackage(500, 40000)">
+                            <div class="package-amount">500 크레딧</div>
+                            <div class="package-price">40,000원</div>
+                            <div class="package-per-credit">80원/크레딧</div>
+                            <div class="package-bonus">+80 보너스 크레딧</div>
+                        </div>
+                        <div class="package-card best" onclick="selectPackage(1000, 70000)">
+                            <div class="package-badge">최고가치</div>
+                            <div class="package-amount">1,000 크레딧</div>
+                            <div class="package-price">70,000원</div>
+                            <div class="package-per-credit">70원/크레딧</div>
+                            <div class="package-bonus">+200 보너스 크레딧</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="payment-section">
+                    <h3>결제 수단 선택</h3>
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <input type="radio" id="card" name="payment" value="card" checked>
+                            <label for="card">
+                                <i class="fas fa-credit-card"></i>
+                                신용카드/체크카드
+                            </label>
+                        </div>
+                        <div class="payment-method">
+                            <input type="radio" id="naverpay" name="payment" value="naverpay">
+                            <label for="naverpay">
+                                <i class="fab fa-neos"></i>
+                                네이버페이
+                            </label>
+                        </div>
+                        <div class="payment-method">
+                            <input type="radio" id="kakaopay" name="payment" value="kakaopay">
+                            <label for="kakaopay">
+                                <i class="fab fa-kickstarter-k"></i>
+                                카카오페이
+                            </label>
+                        </div>
+                        <div class="payment-method">
+                            <input type="radio" id="tosspay" name="payment" value="tosspay">
+                            <label for="tosspay">
+                                <i class="fas fa-mobile-alt"></i>
+                                토스페이
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-summary">
+                        <div class="summary-item">
+                            <span>선택한 패키지:</span>
+                            <span id="selected-package">패키지를 선택해주세요</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>결제 금액:</span>
+                            <span id="payment-amount">0원</span>
+                        </div>
+                    </div>
+                    
+                    <button class="payment-btn" onclick="processPayment()">
+                        <i class="fas fa-credit-card"></i>
+                        결제하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

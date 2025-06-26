@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회사 관리자 페이지 - AI 에이전트 허브</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="company-admin-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="company-admin-layout">
+        <!-- 사이드바 -->
+        <aside class="company-sidebar">
+            <div class="sidebar-header">
+                <div class="company-logo">
+                    <i class="fas fa-building"></i>
+                    <div>
+                        <span class="company-name">테크컴퍼니</span>
+                        <span class="admin-label">관리자</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a href="#" onclick="showSection('overview')" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>대시보드</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('employees')" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>직원 관리</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('permissions')" class="nav-link">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>권한 관리</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('agents-settings')" class="nav-link">
+                            <i class="fas fa-robot"></i>
+                            <span>에이전트 설정</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('credits-manage')" class="nav-link">
+                            <i class="fas fa-coins"></i>
+                            <span>크레딧 관리</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" onclick="showSection('analytics')" class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>사용 분석</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="index.html" class="back-to-main">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>메인으로 돌아가기</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="company-main">
+            <!-- 헤더 -->
+            <header class="company-header">
+                <div class="header-left">
+                    <h1 id="page-title">회사 대시보드</h1>
+                </div>
+                <div class="header-right">
+                    <div class="company-credit-info">
+                        <i class="fas fa-coins"></i>
+                        <span>회사 크레딧: <strong>15,750</strong></span>
+                    </div>
+                    <div class="admin-info">
+                        <i class="fas fa-user-tie"></i>
+                        <span>김관리자</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 대시보드 섹션 -->
+            <section id="overview-section" class="company-section active">
+                <div class="company-stats-grid">
+                    <div class="company-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">28</div>
+                            <div class="stat-label">활성 직원</div>
+                            <div class="stat-change positive">+2 (이번 달)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="company-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">456</div>
+                            <div class="stat-label">AI 사용 횟수</div>
+                            <div class="stat-change positive">+23 (오늘)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="company-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">8,234</div>
+                            <div class="stat-label">사용된 크레딧</div>
+                            <div class="stat-change positive">+456 (이번 주)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="company-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-number">12</div>
+                            <div class="stat-label">활성 에이전트</div>
+                            <div class="stat-change neutral">변동 없음</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-overview">
+                    <div class="overview-card">
+                        <h3>부서별 사용 현황</h3>
+                        <div class="department-usage">
+                            <div class="usage-item">
+                                <div class="department-info">
+                                    <span class="department-name">마케팅팀</span>
+                                    <span class="usage-count">156회</span>
+                                </div>
+                                <div class="usage-bar">
+                                    <div class="usage-fill" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="usage-item">
+                                <div class="department-info">
+                                    <span class="department-name">개발팀</span>
+                                    <span class="usage-count">98회</span>
+                                </div>
+                                <div class="usage-bar">
+                                    <div class="usage-fill" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="usage-item">
+                                <div class="department-info">
+                                    <span class="department-name">기획팀</span>
+                                    <span class="usage-count">87회</span>
+                                </div>
+                                <div class="usage-bar">
+                                    <div class="usage-fill" style="width: 50%"></div>
+                                </div>
+                            </div>
+                            <div class="usage-item">
+                                <div class="department-info">
+                                    <span class="department-name">영업팀</span>
+                                    <span class="usage-count">65회</span>
+                                </div>
+                                <div class="usage-bar">
+                                    <div class="usage-fill" style="width: 35%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <h3>인기 AI 에이전트</h3>
+                        <div class="popular-agents">
+                            <div class="agent-usage-item">
+                                <div class="agent-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="agent-info">
+                                    <span class="agent-name">회의록 자동화 AI</span>
+                                    <span class="usage-stats">87회 사용</span>
+                                </div>
+                                <span class="usage-percentage">32%</span>
+                            </div>
+                            <div class="agent-usage-item">
+                                <div class="agent-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="agent-info">
+                                    <span class="agent-name">이메일 작성 AI</span>
+                                    <span class="usage-stats">64회 사용</span>
+                                </div>
+                                <span class="usage-percentage">24%</span>
+                            </div>
+                            <div class="agent-usage-item">
+                                <div class="agent-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="agent-info">
+                                    <span class="agent-name">리뷰 분석 AI</span>
+                                    <span class="usage-stats">43회 사용</span>
+                                </div>
+                                <span class="usage-percentage">16%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 직원 관리 섹션 -->
+            <section id="employees-section" class="company-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>직원 관리</h2>
+                        <p>회사 직원들의 계정과 사용 현황을 관리합니다</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-primary" onclick="inviteEmployee()">
+                            <i class="fas fa-user-plus"></i>
+                            직원 초대
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="employees-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th>부서</th>
+                                <th>직급</th>
+                                <th>가입일</th>
+                                <th>사용 횟수</th>
+                                <th>상태</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="employee-info">
+                                        <img src="https://via.placeholder.com/32" alt="프로필" class="profile-img">
+                                        <span>홍길동</span>
+                                    </div>
+                                </td>
+                                <td>hong@techcompany.com</td>
+                                <td>마케팅팀</td>
+                                <td>대리</td>
+                                <td>2024-03-15</td>
+                                <td>45회</td>
+                                <td><span class="status-active">활성</span></td>
+                                <td>
+                                    <button class="btn-action" onclick="editEmployee('hong')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action" onclick="suspendEmployee('hong')">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-info">
+                                        <img src="https://via.placeholder.com/32" alt="프로필" class="profile-img">
+                                        <span>김철수</span>
+                                    </div>
+                                </td>
+                                <td>kim@techcompany.com</td>
+                                <td>개발팀</td>
+                                <td>선임</td>
+                                <td>2024-02-20</td>
+                                <td>32회</td>
+                                <td><span class="status-active">활성</span></td>
+                                <td>
+                                    <button class="btn-action" onclick="editEmployee('kim')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action" onclick="suspendEmployee('kim')">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="employee-info">
+                                        <img src="https://via.placeholder.com/32" alt="프로필" class="profile-img">
+                                        <span>이영희</span>
+                                    </div>
+                                </td>
+                                <td>lee@techcompany.com</td>
+                                <td>기획팀</td>
+                                <td>주임</td>
+                                <td>2024-04-10</td>
+                                <td>28회</td>
+                                <td><span class="status-inactive">비활성</span></td>
+                                <td>
+                                    <button class="btn-action" onclick="editEmployee('lee')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action" onclick="activateEmployee('lee')">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 권한 관리 섹션 -->
+            <section id="permissions-section" class="company-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>권한 관리</h2>
+                        <p>부서별, 직급별 AI 에이전트 사용 권한을 설정합니다</p>
+                    </div>
+                </div>
+                
+                <div class="permissions-grid">
+                    <div class="permission-card">
+                        <h3>부서별 권한 설정</h3>
+                        <div class="department-permissions">
+                            <div class="department-item">
+                                <div class="department-header">
+                                    <span class="department-name">마케팅팀</span>
+                                    <span class="permission-count">8/12 에이전트 허용</span>
+                                </div>
+                                <div class="permission-list">
+                                    <div class="permission-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            <span>리뷰 분석 AI</span>
+                                        </label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            <span>SNS 이벤트 기획 AI</span>
+                                        </label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            <span>블로그 생성기</span>
+                                        </label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <label>
+                                            <input type="checkbox">
+                                            <span>PPT 생성기</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button class="btn-secondary" onclick="editDepartmentPermissions('marketing')">
+                                    권한 수정
+                                </button>
+                            </div>
+                            
+                            <div class="department-item">
+                                <div class="department-header">
+                                    <span class="department-name">개발팀</span>
+                                    <span class="permission-count">6/12 에이전트 허용</span>
+                                </div>
+                                <div class="permission-list">
+                                    <div class="permission-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            <span>회의록 자동화 AI</span>
+                                        </label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <label>
+                                            <input type="checkbox" checked>
+                                            <span>이메일 작성 AI</span>
+                                        </label>
+                                    </div>
+                                    <div class="permission-item">
+                                        <label>
+                                            <input type="checkbox">
+                                            <span>리뷰 분석 AI</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button class="btn-secondary" onclick="editDepartmentPermissions('development')">
+                                    권한 수정
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="permission-card">
+                        <h3>개별 직원 권한</h3>
+                        <div class="individual-permissions">
+                            <div class="employee-permission">
+                                <div class="employee-info">
+                                    <img src="https://via.placeholder.com/40" alt="프로필" class="profile-img">
+                                    <div>
+                                        <span class="employee-name">홍길동</span>
+                                        <span class="employee-role">마케팅팀 대리</span>
+                                    </div>
+                                </div>
+                                <div class="permission-status">
+                                    <span class="allowed-agents">8개 에이전트 허용</span>
+                                    <button class="btn-action" onclick="editIndividualPermissions('hong')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="employee-permission">
+                                <div class="employee-info">
+                                    <img src="https://via.placeholder.com/40" alt="프로필" class="profile-img">
+                                    <div>
+                                        <span class="employee-name">김철수</span>
+                                        <span class="employee-role">개발팀 선임</span>
+                                    </div>
+                                </div>
+                                <div class="permission-status">
+                                    <span class="allowed-agents">12개 에이전트 허용</span>
+                                    <button class="btn-action" onclick="editIndividualPermissions('kim')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 에이전트 설정 섹션 -->
+            <section id="agents-settings-section" class="company-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>AI 에이전트 설정</h2>
+                        <p>회사에서 사용할 AI 에이전트를 선택하고 관리합니다</p>
+                    </div>
+                </div>
+                
+                <div class="agents-categories">
+                    <div class="category-section">
+                        <h3>일반사무</h3>
+                        <div class="agents-list">
+                            <div class="agent-setting-item active">
+                                <div class="agent-info">
+                                    <div class="agent-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="agent-details">
+                                        <span class="agent-name">회의록 자동화 AI</span>
+                                        <span class="agent-cost">15 크레딧</span>
+                                    </div>
+                                </div>
+                                <div class="agent-controls">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="agent-setting-item active">
+                                <div class="agent-info">
+                                    <div class="agent-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="agent-details">
+                                        <span class="agent-name">이메일 작성 AI</span>
+                                        <span class="agent-cost">10 크레딧</span>
+                                    </div>
+                                </div>
+                                <div class="agent-controls">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="agent-setting-item">
+                                <div class="agent-info">
+                                    <div class="agent-icon">
+                                        <i class="fas fa-presentation"></i>
+                                    </div>
+                                    <div class="agent-details">
+                                        <span class="agent-name">PPT 생성기</span>
+                                        <span class="agent-cost">25 크레딧</span>
+                                    </div>
+                                </div>
+                                <div class="agent-controls">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-section">
+                        <h3>마케팅/광고</h3>
+                        <div class="agents-list">
+                            <div class="agent-setting-item active">
+                                <div class="agent-info">
+                                    <div class="agent-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="agent-details">
+                                        <span class="agent-name">리뷰 분석 AI</span>
+                                        <span class="agent-cost">18 크레딧</span>
+                                    </div>
+                                </div>
+                                <div class="agent-controls">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="agent-setting-item active">
+                                <div class="agent-info">
+                                    <div class="agent-icon">
+                                        <i class="fas fa-calendar-star"></i>
+                                    </div>
+                                    <div class="agent-details">
+                                        <span class="agent-name">SNS 이벤트 기획 AI</span>
+                                        <span class="agent-cost">30 크레딧</span>
+                                    </div>
+                                </div>
+                                <div class="agent-controls">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 크레딧 관리 섹션 -->
+            <section id="credits-manage-section" class="company-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>크레딧 관리</h2>
+                        <p>회사 크레딧 사용량과 충전 내역을 관리합니다</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-primary" onclick="chargeCredits()">
+                            <i class="fas fa-plus"></i>
+                            크레딧 충전
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="credits-overview">
+                    <div class="credit-summary-card">
+                        <h3>크레딧 현황</h3>
+                        <div class="credit-stats">
+                            <div class="credit-stat">
+                                <span class="stat-label">보유 크레딧</span>
+                                <span class="stat-value">15,750</span>
+                            </div>
+                            <div class="credit-stat">
+                                <span class="stat-label">이번 달 사용</span>
+                                <span class="stat-value">8,234</span>
+                            </div>
+                            <div class="credit-stat">
+                                <span class="stat-label">평균 일일 사용</span>
+                                <span class="stat-value">316</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="credit-usage-card">
+                        <h3>직원별 크레딧 사용량</h3>
+                        <div class="employee-usage-list">
+                            <div class="employee-usage">
+                                <div class="employee-info">
+                                    <span class="employee-name">홍길동</span>
+                                    <span class="department">마케팅팀</span>
+                                </div>
+                                <div class="usage-amount">
+                                    <span class="credits-used">1,250 크레딧</span>
+                                    <div class="usage-bar">
+                                        <div class="usage-fill" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="employee-usage">
+                                <div class="employee-info">
+                                    <span class="employee-name">김철수</span>
+                                    <span class="department">개발팀</span>
+                                </div>
+                                <div class="usage-amount">
+                                    <span class="credits-used">980 크레딧</span>
+                                    <div class="usage-bar">
+                                        <div class="usage-fill" style="width: 58%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="employee-usage">
+                                <div class="employee-info">
+                                    <span class="employee-name">이영희</span>
+                                    <span class="department">기획팀</span>
+                                </div>
+                                <div class="usage-amount">
+                                    <span class="credits-used">756 크레딧</span>
+                                    <div class="usage-bar">
+                                        <div class="usage-fill" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 사용 분석 섹션 -->
+            <section id="analytics-section" class="company-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>사용 분석</h2>
+                        <p>회사의 AI 에이전트 사용 패턴과 효율성을 분석합니다</p>
+                    </div>
+                </div>
+                
+                <div class="analytics-dashboard">
+                    <div class="analytics-chart">
+                        <h3>월별 사용 트렌드</h3>
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-area"></i>
+                            <p>사용량 차트가 여기에 표시됩니다</p>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-insights">
+                        <h3>주요 인사이트</h3>
+                        <div class="insight-list">
+                            <div class="insight-item">
+                                <div class="insight-icon success">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <span class="insight-title">사용량 증가</span>
+                                    <span class="insight-description">지난 달 대비 23% 증가</span>
+                                </div>
+                            </div>
+                            
+                            <div class="insight-item">
+                                <div class="insight-icon info">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <span class="insight-title">인기 에이전트</span>
+                                    <span class="insight-description">회의록 자동화 AI가 가장 많이 사용됨</span>
+                                </div>
+                            </div>
+                            
+                            <div class="insight-item">
+                                <div class="insight-icon warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <span class="insight-title">크레딧 소모 주의</span>
+                                    <span class="insight-description">현재 페이스로 15일 후 크레딧 부족 예상</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="company-admin-script.js"></script>
+</body>
+</html>
