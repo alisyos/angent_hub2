@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Hub 플랫폼 화면정의서</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .header .meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .nav {
+            background: #2c3e50;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .section h4 {
+            color: #5a6c7d;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-card h4 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tech-tag {
+            background: #667eea;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .flow-diagram {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .phase-card {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .phase-card h4 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .checklist {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .checklist li {
+            padding: 0.3rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .checklist li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .mermaid-container {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                box-shadow: none;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .nav ul {
+                justify-content: center;
+            }
+            
+            .header .meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media print {
+            .nav {
+                display: none;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+            
+            .section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <header class="header">
+            <h1>🤖 AI Agent Hub 플랫폼</h1>
+            <div class="subtitle">화면정의서 (Screen Definition Document)</div>
+            <div class="meta">
+                <span>📅 작성일: 2024년</span>
+                <span>👥 대상: 개발팀</span>
+                <span>📋 버전: v1.0</span>
+                <span>🎯 목적: UI/UX 검증된 목업 기반 개발 요구사항 정의</span>
+            </div>
+        </header>
+
+        <!-- 네비게이션 -->
+        <nav class="nav">
+            <div class="nav-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <ul style="display: flex; gap: 2rem; flex-wrap: wrap; margin: 0; list-style: none;">
+                        <li><a href="#overview">📋 개요</a></li>
+                    <li><a href="#architecture">🏗️ 아키텍처</a></li>
+                    <li><a href="#pages">📄 페이지 정의</a></li>
+                    <li><a href="#data">📊 데이터 구조</a></li>
+                    <li><a href="#flow">🔄 사용자 플로우</a></li>
+                    <li><a href="#design">🎨 디자인 가이드</a></li>
+                    <li><a href="#api">🔗 API 요구사항</a></li>
+                    <li><a href="#development">🛠️ 개발 계획</a></li>
+                    <li><a href="#test">🧪 테스트</a></li>
+                        <li><a href="#diagrams">📊 구조도</a></li>
+                    </ul>
+                    <div style="display: flex; gap: 1rem;">
+                        <button onclick="window.print()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                            🖨️ 인쇄
+                        </button>
+                        <button onclick="scrollToTop()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                            ⬆️ 상단
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="content">
+            <!-- 프로젝트 개요 -->
+            <section id="overview" class="section">
+                <h2>📋 프로젝트 개요</h2>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>🎯 프로젝트 목표</h4>
+                        <p>다양한 AI 에이전트를 통합 관리하고 활용할 수 있는 실제 테스트 가능한 플랫폼 구현</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>✨ 주요 특징</h4>
+                        <ul>
+                            <li>실제 회원가입/로그인 기능</li>
+                            <li>통합된 데이터 관리 시스템</li>
+                            <li>관리자/사용자 페이지 연동</li>
+                            <li>Vercel 배포 지원</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>🤖 AI 에이전트</h4>
+                        <ul>
+                            <li>일반사무: 4개 에이전트</li>
+                            <li>마케팅/광고: 4개 에이전트</li>
+                            <li>콘텐츠 제작: 2개 에이전트</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>👥 사용자 역할</h4>
+                        <ul>
+                            <li>일반 사용자 (개인/회사)</li>
+                            <li>회사 관리자</li>
+                            <li>시스템 관리자</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 시스템 아키텍처 -->
+            <section id="architecture" class="section">
+                <h2>🏗️ 시스템 아키텍처</h2>
+                
+                <h3>기술 스택</h3>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML5</span>
+                    <span class="tech-tag">CSS3</span>
+                    <span class="tech-tag">JavaScript ES6+</span>
+                    <span class="tech-tag">LocalStorage</span>
+                    <span class="tech-tag">Font Awesome 6.0</span>
+                    <span class="tech-tag">Vercel</span>
+                </div>
+
+                <h3>전체 구조</h3>
+                <div class="code-block">
+AI Agent Hub Platform
+├── 메인 사용자 페이지 (index.html)
+├── 시스템 관리자 페이지 (admin.html)  
+├── 회사 관리자 페이지 (company-admin.html)
+└── 공통 데이터 관리 시스템 (data-manager.js)
+                </div>
+
+                <h3>사용자 역할별 접근 권한</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>역할</th>
+                                <th>접근 페이지</th>
+                                <th>기본 계정</th>
+                                <th>주요 권한</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>일반 사용자</strong></td>
+                                <td>index.html</td>
+                                <td>user@test.com / user123</td>
+                                <td>AI 에이전트 사용, 크레딧 관리</td>
+                            </tr>
+                            <tr>
+                                <td><strong>회사 관리자</strong></td>
+                                <td>company-admin.html</td>
+                                <td>manager@company.com / company123</td>
+                                <td>직원 관리, 부서별 통계, 권한 관리</td>
+                            </tr>
+                            <tr>
+                                <td><strong>시스템 관리자</strong></td>
+                                <td>admin.html</td>
+                                <td>admin@agenthub.com / admin123</td>
+                                <td>전체 시스템 관리, 회원 관리, 통계</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 페이지별 상세 정의 -->
+            <section id="pages" class="section">
+                <h2>📄 페이지별 상세 정의</h2>
+                
+                <h3>1️⃣ 메인 사용자 페이지 (index.html)</h3>
+                
+                <h4>로그인 전 홈페이지</h4>
+                <div class="flow-diagram">
+Navigation Bar → Hero Section → Features Section → Pricing Preview
+                </div>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>🎯 Hero Section</h4>
+                        <ul>
+                            <li>메인 타이틀 및 설명</li>
+                            <li>"무료로 시작하기" CTA 버튼</li>
+                            <li>"기능 둘러보기" 버튼</li>
+                            <li>Hero 아이콘</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>✨ Features Section</h4>
+                        <ul>
+                            <li>일반사무 자동화 카드</li>
+                            <li>마케팅 지원 카드</li>
+                            <li>콘텐츠 제작 카드</li>
+                            <li>반응형 그리드 (3열→2열→1열)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>💰 Pricing Preview</h4>
+                        <ul>
+                            <li>스타터: 100 크레딧 / 9,900원</li>
+                            <li>프로: 300 크레딧 / 27,000원 [인기]</li>
+                            <li>비즈니스: 1,000 크레딧 / 70,000원</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>🔐 로그인/회원가입 모달</h4>
+                        <ul>
+                            <li>탭 네비게이션 (로그인/회원가입)</li>
+                            <li>계정 유형 선택 (개인/회사)</li>
+                            <li>유효성 검증 (이메일, 비밀번호)</li>
+                            <li>회사 정보 조건부 표시</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4>로그인 후 대시보드</h4>
+                <div class="flow-diagram">
+Navigation Bar → Dashboard Header → AI Agent Categories
+                </div>
+
+                <h3>2️⃣ 시스템 관리자 페이지 (admin.html)</h3>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>📊 대시보드 섹션</h4>
+                        <ul>
+                            <li>총 회원 수 (1,247명, +12 이번 주)</li>
+                            <li>AI 에이전트 실행 횟수 (3,429회)</li>
+                            <li>크레딧 사용량 (156,789 크레딧)</li>
+                            <li>이번 달 매출 (₩2,340,000)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>👥 회원 관리 섹션</h4>
+                        <ul>
+                            <li>계정 유형 필터</li>
+                            <li>상태 필터 (활성/비활성/정지)</li>
+                            <li>검색 기능 (이름, 이메일)</li>
+                            <li>일괄 선택 및 액션</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>🤖 AI 에이전트 관리</h4>
+                        <ul>
+                            <li>에이전트 활성화/비활성화</li>
+                            <li>크레딧 가격 설정</li>
+                            <li>사용량 통계</li>
+                            <li>에이전트 추가/삭제</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>📈 로그 및 통계</h4>
+                        <ul>
+                            <li>일별 사용자 활동 차트</li>
+                            <li>인기 AI 에이전트 랭킹</li>
+                            <li>매출 분석</li>
+                            <li>사용자 활동 분석</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>3️⃣ 회사 관리자 페이지 (company-admin.html)</h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">28</div>
+                        <div>활성 직원</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">456</div>
+                        <div>AI 사용 횟수</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8,234</div>
+                        <div>사용된 크레딧</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div>활성 에이전트</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 데이터 구조 -->
+            <section id="data" class="section">
+                <h2>📊 데이터 구조 정의</h2>
+                
+                <h3>User 객체</h3>
+                <div class="code-block">
+{
+  id: string,           // 고유 식별자
+  email: string,        // 이메일 (로그인 ID)
+  password: string,     // 비밀번호 (해시화 필요)
+  name: string,         // 사용자명
+  role: string,         // 'admin' | 'company_admin' | 'user'
+  accountType: string,  // 'admin' | 'company' | 'individual'
+  credits: number,      // 보유 크레딧
+  createdAt: string,    // 가입일 (ISO 8601)
+  status: string,       // 'active' | 'inactive' | 'suspended'
+  
+  // 회사 계정 전용 필드
+  companyName?: string,
+  businessNumber?: string,
+  department?: string,
+  position?: string
+}
+                </div>
+
+                <h3>Agent 객체</h3>
+                <div class="code-block">
+{
+  id: string,           // 에이전트 고유 ID
+  title: string,        // 에이전트 제목
+  description: string,  // 설명
+  icon: string,         // Font Awesome 아이콘 클래스
+  credits: number,      // 필요 크레딧
+  category: string,     // '일반사무' | '마케팅/광고' | '콘텐츠 제작'
+  status: string,       // 'active' | 'inactive'
+  createdAt: string,    // 생성일
+  usage: number         // 총 사용 횟수
+}
+                </div>
+
+                <h3>Usage Record 객체</h3>
+                <div class="code-block">
+{
+  id: string,           // 사용 기록 ID
+  userId: string,       // 사용자 ID
+  agentId: string,      // 에이전트 ID
+  credits: number,      // 사용된 크레딧
+  timestamp: string,    // 사용 시간
+  result?: object       // 결과 데이터 (선택적)
+}
+                </div>
+            </section>
+
+            <!-- 사용자 플로우 -->
+            <section id="flow" class="section">
+                <h2>🔄 사용자 플로우 정의</h2>
+                
+                <h3>신규 사용자 플로우</h3>
+                <div class="flow-diagram">
+방문자 → 홈페이지 → 회원가입 → 이메일 인증 → 로그인 → 대시보드 → 에이전트 선택 → 크레딧 사용
+                </div>
+
+                <h3>기존 사용자 플로우</h3>
+                <div class="flow-diagram">
+로그인 → 대시보드 → 에이전트 실행 → 결과 확인 → 다운로드/재실행
+                </div>
+
+                <h3>관리자 플로우</h3>
+                <div class="flow-diagram">
+관리자 로그인 → 관리자 대시보드 → 데이터 관리 → 통계 확인 → 시스템 설정
+                </div>
+
+                <h3>AI 에이전트 실행 플로우</h3>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>🎯 에이전트 선택</h4>
+                        <ol>
+                            <li>카테고리별 에이전트 목록 확인</li>
+                            <li>필요 크레딧 확인</li>
+                            <li>에이전트 카드 클릭</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>✏️ 입력 및 실행</h4>
+                        <ol>
+                            <li>입력 데이터 작성</li>
+                            <li>파일 업로드 (선택적)</li>
+                            <li>실행 버튼 클릭</li>
+                            <li>크레딧 차감</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>📊 결과 확인</h4>
+                        <ol>
+                            <li>로딩 상태 표시</li>
+                            <li>시뮬레이션 결과 생성</li>
+                            <li>결과 페이지 표시</li>
+                            <li>다운로드/재실행 옵션</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>💳 크레딧 관리</h4>
+                        <ol>
+                            <li>잔액 부족 시 충전 페이지 이동</li>
+                            <li>패키지 선택</li>
+                            <li>결제 수단 선택</li>
+                            <li>결제 완료 후 크레딧 충전</li>
+                        </ol>
+                    </div>
+                                 </div>
+             </section>
+
+            <!-- 디자인 가이드 -->
+            <section id="design" class="section">
+                <h2>🎨 UI/UX 디자인 가이드</h2>
+                
+                <h3>색상 시스템</h3>
+                <div class="info-grid">
+                    <div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <h4>Primary Gradient</h4>
+                        <p>#667eea → #764ba2</p>
+                    </div>
+                    <div class="info-card" style="background: #28a745; color: white;">
+                        <h4>Success</h4>
+                        <p>#28a745</p>
+                    </div>
+                    <div class="info-card" style="background: #ffc107; color: #333;">
+                        <h4>Warning</h4>
+                        <p>#ffc107</p>
+                    </div>
+                    <div class="info-card" style="background: #dc3545; color: white;">
+                        <h4>Danger</h4>
+                        <p>#dc3545</p>
+                    </div>
+                </div>
+
+                <h3>반응형 브레이크포인트</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>디바이스</th>
+                                <th>화면 크기</th>
+                                <th>컬럼 수</th>
+                                <th>주요 변화</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>모바일</td>
+                                <td>320px ~ 768px</td>
+                                <td>1열</td>
+                                <td>네비게이션 햄버거 메뉴</td>
+                            </tr>
+                            <tr>
+                                <td>태블릿</td>
+                                <td>768px ~ 1024px</td>
+                                <td>2열</td>
+                                <td>카드 그리드 2열</td>
+                            </tr>
+                            <tr>
+                                <td>데스크톱</td>
+                                <td>1024px 이상</td>
+                                <td>3열</td>
+                                <td>전체 기능 표시</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>애니메이션 및 인터랙션</h3>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>⚡ 전환 속도</h4>
+                        <ul>
+                            <li>Fast: 0.15s (호버 효과)</li>
+                            <li>Normal: 0.3s (페이지 전환)</li>
+                            <li>Slow: 0.5s (모달 등장)</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h4>🎭 호버 효과</h4>
+                        <ul>
+                            <li>카드 상승: translateY(-4px)</li>
+                            <li>그림자 강화: box-shadow 증가</li>
+                            <li>색상 변화: 투명도 조절</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API 요구사항 -->
+            <section id="api" class="section">
+                <h2>🔗 API 요구사항 (백엔드 연동 시)</h2>
+                
+                <h3>인증 API</h3>
+                <div class="code-block">
+POST /api/auth/register    # 회원가입
+POST /api/auth/login       # 로그인
+POST /api/auth/logout      # 로그아웃
+GET  /api/auth/profile     # 프로필 조회
+PUT  /api/auth/profile     # 프로필 수정
+                </div>
+
+                <h3>사용자 관리 API</h3>
+                <div class="code-block">
+GET    /api/users              # 사용자 목록 (관리자)
+GET    /api/users/:id          # 사용자 상세
+PUT    /api/users/:id          # 사용자 정보 수정
+DELETE /api/users/:id          # 사용자 삭제
+POST   /api/users/:id/credits  # 크레딧 충전/차감
+                </div>
+
+                <h3>에이전트 API</h3>
+                <div class="code-block">
+GET  /api/agents               # 에이전트 목록
+GET  /api/agents/:id           # 에이전트 상세
+POST /api/agents/:id/run       # 에이전트 실행
+GET  /api/agents/results/:id   # 결과 조회
+                </div>
+
+                <h3>통계 API</h3>
+                <div class="code-block">
+GET /api/stats/dashboard       # 대시보드 통계
+GET /api/stats/usage           # 사용량 통계
+GET /api/stats/revenue         # 매출 통계
+                </div>
+            </section>
+
+            <!-- 개발 계획 -->
+            <section id="development" class="section">
+                <h2>🛠️ 개발 우선순위 및 단계</h2>
+                
+                <div class="phase-grid">
+                    <div class="phase-card">
+                        <h4>Phase 1: 기본 구조 (1-2주)</h4>
+                        <ul class="checklist">
+                            <li>프로젝트 초기 설정</li>
+                            <li>인증 시스템 구현</li>
+                            <li>기본 페이지 레이아웃</li>
+                            <li>반응형 디자인 적용</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="phase-card">
+                        <h4>Phase 2: 핵심 기능 (2-3주)</h4>
+                        <ul class="checklist">
+                            <li>AI 에이전트 시뮬레이션 시스템</li>
+                            <li>크레딧 관리 시스템</li>
+                            <li>사용자 대시보드</li>
+                            <li>결과 표시 및 다운로드</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="phase-card">
+                        <h4>Phase 3: 관리자 기능 (1-2주)</h4>
+                        <ul class="checklist">
+                            <li>시스템 관리자 페이지</li>
+                            <li>회사 관리자 페이지</li>
+                            <li>데이터 관리 시스템</li>
+                            <li>통계 및 분석 기능</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="phase-card">
+                        <h4>Phase 4: 고도화 (1-2주)</h4>
+                        <ul class="checklist">
+                            <li>실제 AI API 연동</li>
+                            <li>결제 시스템 연동</li>
+                            <li>성능 최적화</li>
+                            <li>보안 강화</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>개발팀 체크리스트</h3>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>🔧 환경 설정</h4>
+                        <ul class="checklist">
+                            <li>Node.js 16+ 설치</li>
+                            <li>Vercel CLI 설치</li>
+                            <li>Git 리포지토리 클론</li>
+                            <li>개발 서버 실행 확인</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>📝 개발 가이드라인</h4>
+                        <ul class="checklist">
+                            <li>코드 스타일 가이드 준수</li>
+                            <li>반응형 디자인 우선 개발</li>
+                            <li>접근성(A11Y) 고려사항 적용</li>
+                            <li>브라우저 호환성 테스트</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>🚀 배포 준비</h4>
+                        <ul class="checklist">
+                            <li>프로덕션 빌드 테스트</li>
+                            <li>환경변수 설정</li>
+                            <li>도메인 연결</li>
+                            <li>SSL 인증서 적용</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>📊 성공 지표 (KPI)</h4>
+                        <ul>
+                            <li>페이지 로딩 속도: < 3초</li>
+                            <li>반응형 호환성: 100%</li>
+                            <li>기능 구현률: 100%</li>
+                            <li>브라우저 호환성: 98%+</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 테스트 시나리오 -->
+            <section id="test" class="section">
+                <h2>🧪 테스트 시나리오</h2>
+                
+                <h3>기능 테스트</h3>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>🔐 회원가입/로그인</h4>
+                        <ol>
+                            <li>개인 계정 회원가입 → 로그인 → 대시보드 접근</li>
+                            <li>회사 계정 회원가입 → 추가 정보 입력 → 승인 대기</li>
+                            <li>잘못된 정보 입력 시 오류 처리</li>
+                            <li>비밀번호 확인 불일치 시 경고</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>🤖 AI 에이전트 실행</h4>
+                        <ol>
+                            <li>충분한 크레딧으로 에이전트 실행 → 성공</li>
+                            <li>부족한 크레딧으로 실행 시도 → 충전 페이지 리다이렉트</li>
+                            <li>결과 생성 → 다운로드 → 재실행</li>
+                            <li>10개 에이전트 모두 실행 테스트</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>👥 관리자 기능</h4>
+                        <ol>
+                            <li>관리자 로그인 → 회원 목록 조회 → 정보 수정</li>
+                            <li>에이전트 상태 변경 → 실시간 반영 확인</li>
+                            <li>통계 데이터 정확성 검증</li>
+                            <li>권한 기반 접근 제어 확인</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h4>💳 크레딧 시스템</h4>
+                        <ol>
+                            <li>크레딧 충전 프로세스 테스트</li>
+                            <li>사용량 차감 정확성 확인</li>
+                            <li>잔액 부족 시 알림 동작</li>
+                            <li>사용 내역 기록 확인</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <h3>성능 및 보안 테스트</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>테스트 항목</th>
+                                <th>목표 기준</th>
+                                <th>측정 방법</th>
+                                <th>중요도</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>페이지 로딩 속도</td>
+                                <td>< 3초</td>
+                                <td>Chrome DevTools, GTmetrix</td>
+                                <td>🔴 High</td>
+                            </tr>
+                            <tr>
+                                <td>반응형 디자인</td>
+                                <td>100% 호환</td>
+                                <td>다양한 기기 테스트</td>
+                                <td>🔴 High</td>
+                            </tr>
+                            <tr>
+                                <td>XSS 방어</td>
+                                <td>안전</td>
+                                <td>스크립트 인젝션 테스트</td>
+                                <td>🟡 Medium</td>
+                            </tr>
+                            <tr>
+                                <td>세션 관리</td>
+                                <td>안전</td>
+                                <td>로그인 상태 유지 테스트</td>
+                                <td>🟡 Medium</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 시스템 구조도 섹션 -->
+            <section id="diagrams" class="section">
+                <h2>📊 시스템 구조도</h2>
+                
+                <div class="mermaid-container">
+                    <h3>전체 시스템 플로우</h3>
+                    <p><em>※ 시스템 전체 구조와 사용자 접근 경로를 보여주는 다이어그램</em></p>
+                    <div style="padding: 2rem; background: #f8f9fa; border-radius: 8px; font-family: monospace;">
+                        사용자 접근 → 역할 분기 → 해당 페이지 → 데이터 관리 시스템
+                        <br><br>
+                        <strong>페이지 구조:</strong><br>
+                        ├── index.html (일반 사용자)<br>
+                        ├── admin.html (시스템 관리자)<br>
+                        ├── company-admin.html (회사 관리자)<br>
+                        └── data-manager.js (통합 데이터)
+                    </div>
+                </div>
+
+                <div class="mermaid-container">
+                    <h3>AI 에이전트 실행 플로우</h3>
+                    <p><em>※ 에이전트 선택부터 결과 확인까지의 전체 프로세스</em></p>
+                    <div style="padding: 2rem; background: #f8f9fa; border-radius: 8px; font-family: monospace;">
+                        에이전트 선택 → 크레딧 확인 → 입력 작성 → 실행 → 결과 확인 → 다운로드/재실행
+                        <br><br>
+                        <strong>에이전트 카테고리:</strong><br>
+                        ├── 일반사무 (4개): 회의록, 이메일, PPT, 음성문서<br>
+                        ├── 마케팅/광고 (4개): 리뷰분석, 키워드, SNS이벤트, 광고문구<br>
+                        └── 콘텐츠 제작 (2개): 카드뉴스, 블로그
+                    </div>
+                </div>
+
+                <div class="mermaid-container">
+                    <h3>권한 관리 구조</h3>
+                    <p><em>※ 역할별 접근 권한과 기능 범위</em></p>
+                    <div style="padding: 2rem; background: #f8f9fa; border-radius: 8px; font-family: monospace;">
+                        <strong>시스템 관리자:</strong> 전체 시스템 관리, 회원 관리, 통계 분석<br>
+                        <strong>회사 관리자:</strong> 직원 관리, 부서별 통계, 권한 설정<br>
+                        <strong>일반 사용자:</strong> AI 에이전트 사용, 크레딧 관리, 프로필 관리
+                    </div>
+                </div>
+            </section>
+
+            <!-- footer -->
+            <footer style="background: #2c3e50; color: white; padding: 2rem; text-align: center; margin-top: 3rem;">
+                <h3>📞 개발 지원 및 문의</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 1rem 0;">
+                    <div>
+                        <h4>🔧 기술 문의</h4>
+                        <p>UI/UX 관련: 기획팀<br>
+                        기능 명세: 본 문서 참조<br>
+                        API 설계: 백엔드팀 협의</p>
+                    </div>
+                    <div>
+                        <h4>📚 추가 자료</h4>
+                        <p>디자인 시스템: Figma 파일<br>
+                        브랜드 가이드: 로고, 컬러<br>
+                        참고 사이트: 경쟁사 분석</p>
+                    </div>
+                </div>
+                <hr style="margin: 2rem 0; border: 1px solid #34495e;">
+                <p><em>본 화면정의서는 AI Agent Hub 플랫폼의 개발을 위한 완전한 가이드입니다.<br>
+                개발 과정에서 추가적인 요구사항이나 수정사항이 있을 경우 기획팀과 사전 협의 후 업데이트하시기 바랍니다.</em></p>
+                <p style="margin-top: 1rem; opacity: 0.7;">© 2024 AI Agent Hub Platform. All rights reserved.</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // 네비게이션 클릭 시 부드러운 스크롤
+        document.querySelectorAll('.nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 스크롤 시 네비게이션 하이라이트
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.style.background = '';
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.background = 'rgba(255,255,255,0.2)';
+                }
+            });
+        });
+
+        // 상단으로 스크롤
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 페이지 로드 시 환영 메시지
+        console.log('🤖 AI Agent Hub 플랫폼 화면정의서가 로드되었습니다!');
+        console.log('📋 개발팀을 위한 상세 가이드를 확인해보세요.');
+    </script>
+</body>
+</html> 

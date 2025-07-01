@@ -1,0 +1,32 @@
+{
+  "name": "ai-agent-hub",
+  "version": "1.0.0",
+  "description": "AI Agent Hub Platform - A comprehensive platform for managing and using AI agents",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "dev:vercel": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "platform",
+    "automation",
+    "productivity"
+  ],
+  "author": "AI Agent Hub Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-agent-hub.git"
+  },
+  "homepage": "https://ai-agent-hub.vercel.app",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}

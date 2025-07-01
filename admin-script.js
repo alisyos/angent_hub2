@@ -3,280 +3,774 @@
 // 현재 활성 섹션
 let currentSection = 'dashboard';
 
-// 초기화
-document.addEventListener('DOMContentLoaded', function() {
-    showSection('dashboard');
-});
-
-// 섹션 전환
-function showSection(sectionName) {
-    // 모든 섹션 숨기기
-    const sections = document.querySelectorAll('.admin-section');
-    sections.forEach(section => {
-        section.classList.remove('active');
-    });
-    
-    // 모든 네비게이션 아이템 비활성화
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.classList.remove('active');
-    });
-    
-    // 선택된 섹션 보이기
-    const targetSection = document.getElementById(sectionName + '-section');
-    if (targetSection) {
-        targetSection.classList.add('active');
-    }
-    
-    // 해당 네비게이션 아이템 활성화
-    const targetNavItem = document.querySelector(`[onclick="showSection('${sectionName}')"]`).parentElement;
-    if (targetNavItem) {
-        targetNavItem.classList.add('active');
-    }
-    
-    // 페이지 제목 업데이트
-    const titles = {
-        'dashboard': '대시보드',
-        'users': '회원 관리',
-        'agents': 'AI 에이전트 관리',
-        'credits': '크레딧 관리',
-        'logs': '로그 및 통계',
-        'settings': '시스템 설정'
-    };
-    
-    document.getElementById('page-title').textContent = titles[sectionName] || '관리자 페이지';
-    currentSection = sectionName;
-}
-
-// 회원 관리 함수들
-function editUser(userId) {
-    alert(`회원 ID ${userId}의 정보를 수정합니다.`);
-}
-
-function suspendUser(userId) {
-    if (confirm(`회원 ID ${userId}를 정지하시겠습니까?`)) {
-        alert('회원이 정지되었습니다.');
-        // 실제로는 서버 API 호출
-    }
-}
-
-function activateUser(userId) {
-    if (confirm(`회원 ID ${userId}를 활성화하시겠습니까?`)) {
-        alert('회원이 활성화되었습니다.');
-        // 실제로는 서버 API 호출
-    }
-}
-
-// AI 에이전트 관리 함수들
-function addNewAgent() {
-    const agentName = prompt('새로운 AI 에이전트 이름을 입력하세요:');
-    if (agentName) {
-        alert(`'${agentName}' 에이전트가 추가되었습니다.`);
-        // 실제로는 서버 API 호출하여 에이전트 추가
-    }
-}
-
-function editPrompt(agentId) {
-    // 프롬프트 편집 모달 또는 페이지 열기
-    const newPrompt = prompt('프롬프트를 수정하세요:');
-    if (newPrompt) {
-        alert(`${agentId} 에이전트의 프롬프트가 수정되었습니다.`);
-        // 실제로는 서버 API 호출하여 프롬프트 업데이트
-    }
-}
-
-function changeModel(agentId) {
-    const models = ['GPT-4', 'GPT-4-mini', 'Claude-4-Sonnet', 'Claude-4-Haiku'];
-    let modelOptions = '';
-    models.forEach((model, index) => {
-        modelOptions += `${index + 1}. ${model}\n`;
-    });
-    
-    const choice = prompt(`사용할 LLM 모델을 선택하세요:\n${modelOptions}\n번호를 입력하세요:`);
-    if (choice && choice >= 1 && choice <= models.length) {
-        const selectedModel = models[choice - 1];
-        alert(`${agentId} 에이전트의 모델이 ${selectedModel}로 변경되었습니다.`);
-        // 실제로는 서버 API 호출하여 모델 변경
-    }
-}
-
-function toggleAgent(agentId) {
-    if (confirm(`${agentId} 에이전트를 비활성화하시겠습니까?`)) {
-        alert('에이전트가 비활성화되었습니다.');
-        // 실제로는 서버 API 호출하여 에이전트 상태 변경
-    }
-}
-
-// 크레딧 관리 함수들
-function addPackage() {
-    const packageInfo = {
-        credits: prompt('크레딧 수량을 입력하세요:'),
-        price: prompt('가격을 입력하세요 (원):'),
-        bonus: prompt('보너스 크레딧을 입력하세요 (선택사항):') || 0
-    };
-    
-    if (packageInfo.credits && packageInfo.price) {
-        alert(`새 패키지가 추가되었습니다:\n${packageInfo.credits} 크레딧 - ${packageInfo.price}원${packageInfo.bonus > 0 ? ` (+${packageInfo.bonus} 보너스)` : ''}`);
-        // 실제로는 서버 API 호출하여 패키지 추가
-    }
-}
-
-// 실시간 데이터 업데이트 시뮬레이션
-function updateDashboardStats() {
-    // 실제 환경에서는 WebSocket이나 주기적 API 호출로 실시간 데이터 업데이트
-    const stats = document.querySelectorAll('.stat-number');
-    if (stats.length > 0) {
-        // 통계 숫자를 약간씩 증가시키는 시뮬레이션
-        setInterval(() => {
-            if (currentSection === 'dashboard') {
-                stats.forEach((stat, index) => {
-                    const currentValue = parseInt(stat.textContent.replace(/[^0-9]/g, ''));
-                    const increment = Math.floor(Math.random() * 5) + 1;
-                    let newValue;
-                    
-                    switch(index) {
-                        case 0: // 회원 수
-                            newValue = currentValue + (Math.random() > 0.7 ? 1 : 0);
-                            stat.textContent = newValue.toLocaleString();
-                            break;
-                        case 1: // AI 실행 횟수
-                            newValue = currentValue + increment;
-                            stat.textContent = newValue.toLocaleString();
-                            break;
-                        case 2: // 크레딧 사용량
-                            newValue = currentValue + increment * 10;
-                            stat.textContent = newValue.toLocaleString();
-                            break;
-                        case 3: // 매출
-                            newValue = currentValue + increment * 1000;
-                            stat.textContent = '₩' + newValue.toLocaleString();
-                            break;
-                    }
-                });
-            }
-        }, 10000); // 10초마다 업데이트
-    }
-}
-
-// 로그 추가 시뮬레이션
-function addNewLog() {
-    const logMessages = [
-        { message: '새로운 사용자가 가입했습니다', type: 'info' },
-        { message: 'AI 에이전트가 성공적으로 실행되었습니다', type: 'success' },
-        { message: '크레딧 결제가 완료되었습니다', type: 'info' },
-        { message: '시스템 백업이 완료되었습니다', type: 'success' },
-        { message: 'API 호출 제한에 도달했습니다', type: 'warning' }
-    ];
-    
-    setInterval(() => {
-        if (currentSection === 'logs') {
-            const logList = document.querySelector('.log-list');
-            if (logList) {
-                const randomLog = logMessages[Math.floor(Math.random() * logMessages.length)];
-                const now = new Date();
-                const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
-                                 now.getMinutes().toString().padStart(2, '0');
-                
-                const logItem = document.createElement('div');
-                logItem.className = 'log-item';
-                logItem.innerHTML = `
-                    <span class="log-time">${timeString}</span>
-                    <span class="log-message">${randomLog.message}</span>
-                    <span class="log-type ${randomLog.type}">${randomLog.type}</span>
-                `;
-                
-                // 새 로그를 맨 위에 추가
-                logList.insertBefore(logItem, logList.firstChild);
-                
-                // 로그가 너무 많아지면 오래된 것 제거
-                if (logList.children.length > 10) {
-                    logList.removeChild(logList.lastChild);
-                }
-            }
-        }
-    }, 15000); // 15초마다 새 로그 추가
-}
-
-// 검색 기능
-function setupSearch() {
-    const searchInput = document.querySelector('.search-box input');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const tableRows = document.querySelectorAll('.data-table tbody tr');
-            
-            tableRows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-    }
-}
+// 관리자 페이지 초기화 및 데이터 관리
+let currentAdminUser = null;
+let currentView = 'dashboard';
 
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', function() {
-    // 실시간 업데이트 시작
-    updateDashboardStats();
-    addNewLog();
+    // 관리자 인증 확인
+    checkAdminAuth();
     
-    // 검색 기능 설정
-    setupSearch();
-    
-    // 툴팁 초기화 (실제 환경에서는 툴팁 라이브러리 사용)
-    const tooltipElements = document.querySelectorAll('[data-tooltip]');
-    tooltipElements.forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            // 툴팁 표시 로직
-        });
-    });
-});
-
-// 키보드 단축키
-document.addEventListener('keydown', function(e) {
-    // Ctrl/Cmd + 숫자키로 섹션 빠른 전환
-    if ((e.ctrlKey || e.metaKey) && e.key >= '1' && e.key <= '6') {
-        e.preventDefault();
-        const sections = ['dashboard', 'users', 'agents', 'credits', 'logs', 'settings'];
-        const sectionIndex = parseInt(e.key) - 1;
-        if (sections[sectionIndex]) {
-            showSection(sections[sectionIndex]);
-        }
+    // 초기 데이터 로드
+    if (currentAdminUser) {
+        loadDashboardData();
+        setupEventListeners();
     }
 });
 
-// 데이터 내보내기 함수
-function exportData(type) {
-    // 실제 환경에서는 서버에서 데이터를 가져와 CSV/Excel 파일로 변환
-    alert(`${type} 데이터를 내보냅니다.`);
-}
-
-// 설정 저장 함수
-function saveSetting(settingType, value) {
-    // 실제 환경에서는 서버 API 호출하여 설정 저장
-    alert(`${settingType} 설정이 저장되었습니다: ${value}`);
-}
-
-// 차트 데이터 생성 (실제 환경에서는 차트 라이브러리 사용)
-function generateChartData() {
-    // Chart.js, D3.js 등의 차트 라이브러리를 사용하여 실제 차트 생성
-    // 여기서는 시뮬레이션만 표시
-}
-
-// 알림 시스템
-function showNotification(message, type = 'info') {
-    // 실제 환경에서는 토스트 알림 라이브러리 사용
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
+// 관리자 인증 확인
+function checkAdminAuth() {
+    const currentUser = dataManager.getCurrentUser();
     
-    // 알림을 화면에 표시하는 로직
-    document.body.appendChild(notification);
+    if (!currentUser || currentUser.role !== 'admin') {
+        alert('관리자 권한이 필요합니다.');
+        window.location.href = 'index.html';
+        return;
+    }
     
+    currentAdminUser = currentUser;
+    updateAdminInfo();
+}
+
+// 관리자 정보 업데이트
+function updateAdminInfo() {
+    if (currentAdminUser) {
+        const adminNameElement = document.getElementById('admin-name');
+        if (adminNameElement) {
+            adminNameElement.textContent = currentAdminUser.name;
+        }
+    }
+}
+
+// 이벤트 리스너 설정
+function setupEventListeners() {
+    // 사이드바 메뉴 클릭
+    document.querySelectorAll('.sidebar-menu li').forEach(item => {
+        item.addEventListener('click', function() {
+            const targetView = this.getAttribute('data-view');
+            if (targetView) {
+                switchView(targetView);
+            }
+        });
+    });
+    
+    // 모달 관련 이벤트
+    setupModalEvents();
+    
+    // 실시간 업데이트
+    setInterval(updateRealTimeData, 30000); // 30초마다 업데이트
+}
+
+// 모달 이벤트 설정
+function setupModalEvents() {
+    // 모달 닫기 버튼
+    document.querySelectorAll('.modal .close, .modal-close').forEach(btn => {
+        btn.addEventListener('click', closeAllModals);
+    });
+    
+    // 모달 외부 클릭 시 닫기
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAllModals();
+            }
+        });
+    });
+}
+
+// 모든 모달 닫기
+function closeAllModals() {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.style.display = 'none';
+    });
+}
+
+// 뷰 전환
+function switchView(viewName) {
+    // 사이드바 메뉴 활성화 상태 업데이트
+    document.querySelectorAll('.sidebar-menu li').forEach(item => {
+        item.classList.remove('active');
+    });
+    document.querySelector(`[data-view="${viewName}"]`).classList.add('active');
+    
+    // 콘텐츠 영역 업데이트
+    hideAllViews();
+    currentView = viewName;
+    
+    switch(viewName) {
+        case 'dashboard':
+            showDashboard();
+            break;
+        case 'users':
+            showUsersManagement();
+            break;
+        case 'agents':
+            showAgentsManagement();
+            break;
+        case 'credits':
+            showCreditsManagement();
+            break;
+        case 'logs':
+            showLogsManagement();
+            break;
+        default:
+            showDashboard();
+    }
+}
+
+// 모든 뷰 숨기기
+function hideAllViews() {
+    const views = ['dashboard-view', 'users-view', 'agents-view', 'credits-view', 'logs-view'];
+    views.forEach(viewId => {
+        const element = document.getElementById(viewId);
+        if (element) {
+            element.style.display = 'none';
+        }
+    });
+}
+
+// 대시보드 표시
+function showDashboard() {
+    const dashboardView = document.getElementById('dashboard-view');
+    if (dashboardView) {
+        dashboardView.style.display = 'block';
+        loadDashboardData();
+    }
+}
+
+// 대시보드 데이터 로드
+function loadDashboardData() {
+    const users = dataManager.getUsers();
+    const agents = dataManager.getAgents();
+    const usageHistory = dataManager.getUsageHistory();
+    
+    // 통계 업데이트
+    updateStatistics(users, agents, usageHistory);
+    
+    // 최근 활동 업데이트
+    updateRecentActivity(usageHistory);
+    
+    // 인기 에이전트 업데이트
+    updatePopularAgents(agents, usageHistory);
+}
+
+// 통계 업데이트
+function updateStatistics(users, agents, usageHistory) {
+    // 총 사용자 수
+    const totalUsersElement = document.getElementById('total-users');
+    if (totalUsersElement) {
+        totalUsersElement.textContent = users.length.toLocaleString();
+    }
+    
+    // 활성 에이전트 수
+    const activeAgentsElement = document.getElementById('active-agents');
+    if (activeAgentsElement) {
+        const activeAgents = agents.filter(agent => agent.status === 'active');
+        activeAgentsElement.textContent = activeAgents.length.toLocaleString();
+    }
+    
+    // 오늘 사용량
+    const todayUsageElement = document.getElementById('today-usage');
+    if (todayUsageElement) {
+        const today = new Date().toDateString();
+        const todayUsage = usageHistory.filter(record => 
+            new Date(record.timestamp).toDateString() === today
+        );
+        todayUsageElement.textContent = todayUsage.length.toLocaleString();
+    }
+    
+    // 총 수익 (크레딧 판매 기준 가상 계산)
+    const totalRevenueElement = document.getElementById('total-revenue');
+    if (totalRevenueElement) {
+        const totalCreditsUsed = usageHistory.reduce((sum, record) => sum + record.credits, 0);
+        const estimatedRevenue = Math.floor(totalCreditsUsed * 0.1); // 크레딧당 0.1원 가정
+        totalRevenueElement.textContent = `${estimatedRevenue.toLocaleString()}원`;
+    }
+}
+
+// 최근 활동 업데이트
+function updateRecentActivity(usageHistory) {
+    const recentActivityElement = document.getElementById('recent-activity');
+    if (!recentActivityElement) return;
+    
+    const recentRecords = usageHistory
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        .slice(0, 10);
+    
+    recentActivityElement.innerHTML = '';
+    
+    if (recentRecords.length === 0) {
+        recentActivityElement.innerHTML = '<p class="no-data">최근 활동이 없습니다.</p>';
+        return;
+    }
+    
+    recentRecords.forEach(record => {
+        const user = dataManager.getUserById(record.userId);
+        const agent = dataManager.getAgentById(record.agentId);
+        
+        if (user && agent) {
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+            activityItem.innerHTML = `
+                <div class="activity-info">
+                    <strong>${user.name}</strong>님이 
+                    <span class="agent-name">${agent.title}</span> 사용
+                </div>
+                <div class="activity-meta">
+                    <span class="credits">${record.credits} 크레딧</span>
+                    <span class="time">${formatTimeAgo(record.timestamp)}</span>
+                </div>
+            `;
+            recentActivityElement.appendChild(activityItem);
+        }
+    });
+}
+
+// 인기 에이전트 업데이트
+function updatePopularAgents(agents, usageHistory) {
+    const popularAgentsElement = document.getElementById('popular-agents');
+    if (!popularAgentsElement) return;
+    
+    // 에이전트별 사용 횟수 계산
+    const agentUsage = {};
+    usageHistory.forEach(record => {
+        agentUsage[record.agentId] = (agentUsage[record.agentId] || 0) + 1;
+    });
+    
+    // 사용 횟수 기준 정렬
+    const sortedAgents = agents
+        .map(agent => ({
+            ...agent,
+            usageCount: agentUsage[agent.id] || 0
+        }))
+        .sort((a, b) => b.usageCount - a.usageCount)
+        .slice(0, 5);
+    
+    popularAgentsElement.innerHTML = '';
+    
+    if (sortedAgents.length === 0) {
+        popularAgentsElement.innerHTML = '<p class="no-data">사용 기록이 없습니다.</p>';
+        return;
+    }
+    
+    sortedAgents.forEach((agent, index) => {
+        const agentItem = document.createElement('div');
+        agentItem.className = 'popular-agent-item';
+        agentItem.innerHTML = `
+            <div class="rank">${index + 1}</div>
+            <div class="agent-info">
+                <div class="agent-name">${agent.title}</div>
+                <div class="usage-count">${agent.usageCount}회 사용</div>
+            </div>
+            <div class="agent-credits">${agent.credits} 크레딧</div>
+        `;
+        popularAgentsElement.appendChild(agentItem);
+    });
+}
+
+// 사용자 관리 표시
+function showUsersManagement() {
+    const usersView = document.getElementById('users-view');
+    if (usersView) {
+        usersView.style.display = 'block';
+        loadUsersData();
+    }
+}
+
+// 사용자 데이터 로드
+function loadUsersData() {
+    const users = dataManager.getUsers();
+    const usersTableBody = document.getElementById('users-table-body');
+    
+    if (!usersTableBody) return;
+    
+    usersTableBody.innerHTML = '';
+    
+    users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.id}</td>
+            <td>
+                <div class="user-info">
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-email">${user.email}</div>
+                </div>
+            </td>
+            <td>
+                <span class="role-badge role-${user.role}">${getRoleDisplayName(user.role)}</span>
+            </td>
+            <td>${user.accountType === 'company' ? user.companyName || '-' : '개인'}</td>
+            <td class="credits">${user.credits.toLocaleString()}</td>
+            <td>
+                <span class="status-badge status-${user.status}">${getStatusDisplayName(user.status)}</span>
+            </td>
+            <td class="actions">
+                <button onclick="editUser('${user.id}')" class="btn-edit">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button onclick="deleteUser('${user.id}')" class="btn-delete">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+        usersTableBody.appendChild(row);
+    });
+}
+
+// 역할 표시명 반환
+function getRoleDisplayName(role) {
+    const roleNames = {
+        'admin': '시스템 관리자',
+        'company_admin': '회사 관리자',
+        'user': '일반 사용자'
+    };
+    return roleNames[role] || role;
+}
+
+// 상태 표시명 반환
+function getStatusDisplayName(status) {
+    const statusNames = {
+        'active': '활성',
+        'inactive': '비활성',
+        'suspended': '정지'
+    };
+    return statusNames[status] || status;
+}
+
+// 사용자 편집
+function editUser(userId) {
+    const user = dataManager.getUserById(userId);
+    if (!user) return;
+    
+    // 편집 모달 표시
+    const modal = document.getElementById('edit-user-modal');
+    if (modal) {
+        // 폼에 사용자 정보 채우기
+        document.getElementById('edit-user-id').value = user.id;
+        document.getElementById('edit-user-name').value = user.name;
+        document.getElementById('edit-user-email').value = user.email;
+        document.getElementById('edit-user-role').value = user.role;
+        document.getElementById('edit-user-credits').value = user.credits;
+        document.getElementById('edit-user-status').value = user.status;
+        
+        modal.style.display = 'block';
+    }
+}
+
+// 사용자 정보 저장
+function saveUserEdit() {
+    const userId = document.getElementById('edit-user-id').value;
+    const updates = {
+        name: document.getElementById('edit-user-name').value,
+        email: document.getElementById('edit-user-email').value,
+        role: document.getElementById('edit-user-role').value,
+        credits: parseInt(document.getElementById('edit-user-credits').value),
+        status: document.getElementById('edit-user-status').value
+    };
+    
+    const updatedUser = dataManager.updateUser(userId, updates);
+    if (updatedUser) {
+        showAlert('사용자 정보가 업데이트되었습니다.', 'success');
+        closeAllModals();
+        loadUsersData();
+    } else {
+        showAlert('사용자 정보 업데이트에 실패했습니다.', 'error');
+    }
+}
+
+// 사용자 삭제
+function deleteUser(userId) {
+    const user = dataManager.getUserById(userId);
+    if (!user) return;
+    
+    if (user.role === 'admin') {
+        showAlert('관리자 계정은 삭제할 수 없습니다.', 'warning');
+        return;
+    }
+    
+    if (confirm(`정말로 ${user.name}님의 계정을 삭제하시겠습니까?`)) {
+        if (dataManager.deleteUser(userId)) {
+            showAlert('사용자가 삭제되었습니다.', 'success');
+            loadUsersData();
+        } else {
+            showAlert('사용자 삭제에 실패했습니다.', 'error');
+        }
+    }
+}
+
+// 에이전트 관리 표시
+function showAgentsManagement() {
+    const agentsView = document.getElementById('agents-view');
+    if (agentsView) {
+        agentsView.style.display = 'block';
+        loadAgentsData();
+    }
+}
+
+// 에이전트 데이터 로드
+function loadAgentsData() {
+    const agents = dataManager.getAgents();
+    const agentsGrid = document.getElementById('agents-grid');
+    
+    if (!agentsGrid) return;
+    
+    agentsGrid.innerHTML = '';
+    
+    agents.forEach(agent => {
+        const agentCard = document.createElement('div');
+        agentCard.className = 'admin-agent-card';
+        agentCard.innerHTML = `
+            <div class="agent-header">
+                <div class="agent-icon">
+                    <i class="${agent.icon}"></i>
+                </div>
+                <div class="agent-status">
+                    <span class="status-badge status-${agent.status}">${agent.status}</span>
+                </div>
+            </div>
+            <div class="agent-info">
+                <h3>${agent.title}</h3>
+                <p>${agent.description}</p>
+                <div class="agent-meta">
+                    <span class="credits">${agent.credits} 크레딧</span>
+                    <span class="category">${agent.category}</span>
+                    <span class="usage">${agent.usage}회 사용</span>
+                </div>
+            </div>
+            <div class="agent-actions">
+                <button onclick="editAgent('${agent.id}')" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> 편집
+                </button>
+                <button onclick="toggleAgentStatus('${agent.id}')" class="btn btn-secondary">
+                    <i class="fas fa-power-off"></i> ${agent.status === 'active' ? '비활성화' : '활성화'}
+                </button>
+            </div>
+        `;
+        agentsGrid.appendChild(agentCard);
+    });
+}
+
+// 에이전트 편집
+function editAgent(agentId) {
+    const agent = dataManager.getAgentById(agentId);
+    if (!agent) return;
+    
+    const modal = document.getElementById('edit-agent-modal');
+    if (modal) {
+        document.getElementById('edit-agent-id').value = agent.id;
+        document.getElementById('edit-agent-title').value = agent.title;
+        document.getElementById('edit-agent-description').value = agent.description;
+        document.getElementById('edit-agent-credits').value = agent.credits;
+        document.getElementById('edit-agent-category').value = agent.category;
+        document.getElementById('edit-agent-icon').value = agent.icon;
+        document.getElementById('edit-agent-status').value = agent.status;
+        
+        modal.style.display = 'block';
+    }
+}
+
+// 에이전트 정보 저장
+function saveAgentEdit() {
+    const agentId = document.getElementById('edit-agent-id').value;
+    const updates = {
+        title: document.getElementById('edit-agent-title').value,
+        description: document.getElementById('edit-agent-description').value,
+        credits: parseInt(document.getElementById('edit-agent-credits').value),
+        category: document.getElementById('edit-agent-category').value,
+        icon: document.getElementById('edit-agent-icon').value,
+        status: document.getElementById('edit-agent-status').value
+    };
+    
+    const updatedAgent = dataManager.updateAgent(agentId, updates);
+    if (updatedAgent) {
+        showAlert('에이전트 정보가 업데이트되었습니다.', 'success');
+        closeAllModals();
+        loadAgentsData();
+    } else {
+        showAlert('에이전트 정보 업데이트에 실패했습니다.', 'error');
+    }
+}
+
+// 에이전트 상태 토글
+function toggleAgentStatus(agentId) {
+    const agent = dataManager.getAgentById(agentId);
+    if (!agent) return;
+    
+    const newStatus = agent.status === 'active' ? 'inactive' : 'active';
+    const updatedAgent = dataManager.updateAgent(agentId, { status: newStatus });
+    
+    if (updatedAgent) {
+        showAlert(`에이전트가 ${newStatus === 'active' ? '활성화' : '비활성화'}되었습니다.`, 'success');
+        loadAgentsData();
+    } else {
+        showAlert('에이전트 상태 변경에 실패했습니다.', 'error');
+    }
+}
+
+// 크레딧 관리 표시
+function showCreditsManagement() {
+    const creditsView = document.getElementById('credits-view');
+    if (creditsView) {
+        creditsView.style.display = 'block';
+        loadCreditsData();
+    }
+}
+
+// 크레딧 데이터 로드
+function loadCreditsData() {
+    const users = dataManager.getUsers();
+    const usageHistory = dataManager.getUsageHistory();
+    
+    // 크레딧 통계 업데이트
+    updateCreditsStatistics(users, usageHistory);
+    
+    // 사용자별 크레딧 현황 업데이트
+    updateUserCreditsTable(users);
+}
+
+// 크레딧 통계 업데이트
+function updateCreditsStatistics(users, usageHistory) {
+    const totalCredits = users.reduce((sum, user) => sum + user.credits, 0);
+    const totalUsed = usageHistory.reduce((sum, record) => sum + record.credits, 0);
+    
+    const totalCreditsElement = document.getElementById('total-credits-stat');
+    const totalUsedElement = document.getElementById('total-used-stat');
+    
+    if (totalCreditsElement) {
+        totalCreditsElement.textContent = totalCredits.toLocaleString();
+    }
+    
+    if (totalUsedElement) {
+        totalUsedElement.textContent = totalUsed.toLocaleString();
+    }
+}
+
+// 사용자별 크레딧 테이블 업데이트
+function updateUserCreditsTable(users) {
+    const tableBody = document.getElementById('user-credits-table-body');
+    if (!tableBody) return;
+    
+    tableBody.innerHTML = '';
+    
+    users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td class="credits">${user.credits.toLocaleString()}</td>
+            <td class="actions">
+                <button onclick="adjustUserCredits('${user.id}')" class="btn btn-primary">
+                    <i class="fas fa-coins"></i> 크레딧 조정
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+// 사용자 크레딧 조정
+function adjustUserCredits(userId) {
+    const user = dataManager.getUserById(userId);
+    if (!user) return;
+    
+    const modal = document.getElementById('adjust-credits-modal');
+    if (modal) {
+        document.getElementById('adjust-user-id').value = userId;
+        document.getElementById('adjust-user-name').textContent = user.name;
+        document.getElementById('current-credits').textContent = user.credits.toLocaleString();
+        document.getElementById('credits-amount').value = '';
+        document.getElementById('credits-operation').value = 'add';
+        
+        modal.style.display = 'block';
+    }
+}
+
+// 크레딧 조정 실행
+function executeCreditsAdjustment() {
+    const userId = document.getElementById('adjust-user-id').value;
+    const amount = parseInt(document.getElementById('credits-amount').value);
+    const operation = document.getElementById('credits-operation').value;
+    
+    if (!amount || amount <= 0) {
+        showAlert('유효한 크레딧 금액을 입력해주세요.', 'warning');
+        return;
+    }
+    
+    let updatedUser;
+    if (operation === 'add') {
+        updatedUser = dataManager.addCredits(userId, amount);
+    } else {
+        updatedUser = dataManager.deductCredits(userId, amount);
+    }
+    
+    if (updatedUser) {
+        showAlert(`크레딧이 ${operation === 'add' ? '추가' : '차감'}되었습니다.`, 'success');
+        closeAllModals();
+        loadCreditsData();
+    } else {
+        showAlert('크레딧 조정에 실패했습니다.', 'error');
+    }
+}
+
+// 로그 관리 표시
+function showLogsManagement() {
+    const logsView = document.getElementById('logs-view');
+    if (logsView) {
+        logsView.style.display = 'block';
+        loadLogsData();
+    }
+}
+
+// 로그 데이터 로드
+function loadLogsData() {
+    const usageHistory = dataManager.getUsageHistory();
+    const logsTableBody = document.getElementById('logs-table-body');
+    
+    if (!logsTableBody) return;
+    
+    logsTableBody.innerHTML = '';
+    
+    // 최근 100개 로그만 표시
+    const recentLogs = usageHistory
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        .slice(0, 100);
+    
+    if (recentLogs.length === 0) {
+        logsTableBody.innerHTML = '<tr><td colspan="5" class="no-data">로그 데이터가 없습니다.</td></tr>';
+        return;
+    }
+    
+    recentLogs.forEach(log => {
+        const user = dataManager.getUserById(log.userId);
+        const agent = dataManager.getAgentById(log.agentId);
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${formatDateTime(log.timestamp)}</td>
+            <td>${user ? user.name : '알 수 없음'}</td>
+            <td>${agent ? agent.title : '알 수 없음'}</td>
+            <td class="credits">${log.credits}</td>
+            <td>에이전트 실행</td>
+        `;
+        logsTableBody.appendChild(row);
+    });
+}
+
+// 실시간 데이터 업데이트
+function updateRealTimeData() {
+    if (currentView === 'dashboard') {
+        loadDashboardData();
+    }
+}
+
+// 시간 포맷팅 함수들
+function formatTimeAgo(timestamp) {
+    const now = new Date();
+    const time = new Date(timestamp);
+    const diffInSeconds = Math.floor((now - time) / 1000);
+    
+    if (diffInSeconds < 60) {
+        return '방금 전';
+    } else if (diffInSeconds < 3600) {
+        return `${Math.floor(diffInSeconds / 60)}분 전`;
+    } else if (diffInSeconds < 86400) {
+        return `${Math.floor(diffInSeconds / 3600)}시간 전`;
+    } else {
+        return `${Math.floor(diffInSeconds / 86400)}일 전`;
+    }
+}
+
+function formatDateTime(timestamp) {
+    return new Date(timestamp).toLocaleString('ko-KR');
+}
+
+// 알림 시스템 (메인 스크립트와 동일)
+function showAlert(message, type = 'info') {
+    // 기존 알림 제거
+    const existingAlert = document.querySelector('.alert-toast');
+    const existingOverlay = document.querySelector('.alert-overlay');
+    if (existingAlert) {
+        existingAlert.remove();
+    }
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+    
+    // 오버레이 배경 생성
+    const overlay = document.createElement('div');
+    overlay.className = 'alert-overlay';
+    overlay.onclick = () => closeAlert();
+    
+    // 새 알림 생성
+    const alert = document.createElement('div');
+    alert.className = `alert-toast alert-${type}`;
+    alert.innerHTML = `
+        <div class="alert-content">
+            <i class="fas fa-${getAlertIcon(type)}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="alert-close" onclick="closeAlert()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(alert);
+    
+    // 5초 후 자동 제거
     setTimeout(() => {
-        document.body.removeChild(notification);
-    }, 3000);
+        closeAlert();
+    }, 5000);
+}
+
+// 알림 닫기 함수
+function closeAlert() {
+    const alert = document.querySelector('.alert-toast');
+    const overlay = document.querySelector('.alert-overlay');
+    
+    if (alert) {
+        alert.style.animation = 'alertSlideOut 0.3s ease-in forwards';
+        setTimeout(() => {
+            if (alert.parentElement) {
+                alert.remove();
+            }
+        }, 300);
+    }
+    
+    if (overlay) {
+        overlay.style.animation = 'overlayFadeOut 0.3s ease-in forwards';
+        setTimeout(() => {
+            if (overlay.parentElement) {
+                overlay.remove();
+            }
+        }, 300);
+    }
+}
+
+function getAlertIcon(type) {
+    const icons = {
+        'success': 'check-circle',
+        'error': 'exclamation-circle',
+        'warning': 'exclamation-triangle',
+        'info': 'info-circle'
+    };
+    return icons[type] || 'info-circle';
+}
+
+// 로그아웃
+function adminLogout() {
+    if (confirm('로그아웃 하시겠습니까?')) {
+        dataManager.logout();
+        window.location.href = 'index.html';
+    }
+}
+
+// 데이터 초기화 (개발용)
+function resetAllData() {
+    if (confirm('모든 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+        dataManager.resetData();
+        showAlert('모든 데이터가 초기화되었습니다.', 'success');
+        loadDashboardData();
+    }
 }

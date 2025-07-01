@@ -6,15 +6,225 @@
     <title>AI 에이전트 허브 플랫폼</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 화면정의 모달 스타일 -->
+    <style>
+        .screen-spec-floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .screen-spec-floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4); }
+            50% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.8); }
+            100% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4); }
+        }
+        
+        .screen-spec-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .screen-spec-content {
+            background: white;
+            margin: 2% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .screen-spec-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-header-action {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-header-action:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        .screen-spec-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        
+        .screen-spec-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .screen-spec-body {
+            padding: 30px;
+            line-height: 1.6;
+        }
+        
+        .spec-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .spec-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .spec-section h4 {
+            color: #5a6c7d;
+            margin: 15px 0 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .component-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .component-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .component-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .component-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .component-desc {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .tech-tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin: 2px;
+        }
+        
+        .code-snippet {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .screen-spec-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+            
+            .screen-spec-floating-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 16px;
+                font-size: 12px;
+            }
+            
+            .screen-spec-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .btn-header-action {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+            
+            .btn-header-action span {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
                 <i class="fas fa-robot"></i>
                 <span>AI 에이전트 허브</span>
             </div>
-            <div class="nav-menu">
+            <div class="nav-menu" id="nav-menu-logged-in" style="display: none;">
+                <div class="nav-item">
+                    
+                </div>
                 <div class="nav-item">
                     <span class="credit-info">
                         <i class="fas fa-coins"></i>
@@ -23,7 +233,7 @@
                 </div>
                 <div class="nav-item dropdown">
                     <i class="fas fa-user-circle"></i>
-                    <span>홍길동</span>
+                    <span id="user-name">홍길동</span>
                     <div class="dropdown-content">
                         <a href="#" onclick="showProfile()">프로필 관리</a>
                         <a href="#" onclick="showCreditManagement()">크레딧 관리</a>
@@ -31,11 +241,98 @@
                     </div>
                 </div>
             </div>
+            <div class="nav-menu" id="nav-menu-guest" style="display: block;">
+                <div class="nav-item">
+
+                </div>
+                <div class="nav-item">
+                    <button class="nav-btn" onclick="showLoginPage()">로그인</button>
+                </div>
+                <div class="nav-item">
+                    <button class="nav-btn signup-btn" onclick="showLoginPage(); showRegisterTab();">회원가입</button>
+                </div>
+            </div>
         </div>
     </nav>
 
     <main class="main-content">
-        <div class="dashboard" id="dashboard">
+        <!-- 로그인 전 홈페이지 -->
+        <div class="home-page" id="home-page">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1>AI 에이전트로 업무 효율성을 혁신하세요</h1>
+                    <p>다양한 AI 에이전트를 활용해 회의록 작성, 이메일 작성, PPT 제작 등 반복적인 업무를 자동화하고 생산성을 극대화하세요.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="showLoginPage(); showRegisterTab();">무료로 시작하기</button>
+                        <button class="btn-secondary" onclick="scrollToFeatures()">기능 둘러보기</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <i class="fas fa-robot hero-icon"></i>
+                </div>
+            </section>
+
+            <section class="features-section" id="features-section">
+                <div class="container">
+                    <h2>주요 기능</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <h3>일반사무 자동화</h3>
+                            <p>회의록 작성, 이메일 작성, PPT 생성 등 반복적인 사무업무를 AI가 대신 처리합니다.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bullhorn"></i>
+                            </div>
+                            <h3>마케팅 지원</h3>
+                            <p>리뷰 분석, 키워드 분석, SNS 이벤트 기획 등 마케팅 업무를 효율적으로 처리합니다.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-pen-fancy"></i>
+                            </div>
+                            <h3>콘텐츠 제작</h3>
+                            <p>카드뉴스, 블로그 포스팅 등 다양한 콘텐츠를 AI가 자동으로 생성합니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pricing-preview">
+                <div class="container">
+                    <h2>간편한 크레딧 시스템</h2>
+                    <p>사용한 만큼만 결제하는 크레딧 시스템으로 부담 없이 시작하세요</p>
+                    <div class="pricing-cards">
+                        <div class="pricing-card">
+                            <h3>스타터</h3>
+                            <div class="price">100 크레딧</div>
+                            <div class="price-won">9,900원</div>
+                            <p>개인 사용자에게 적합</p>
+                        </div>
+                        <div class="pricing-card popular">
+                            <div class="badge">인기</div>
+                            <h3>프로</h3>
+                            <div class="price">300 크레딧</div>
+                            <div class="price-won">27,000원</div>
+                            <p>소규모 팀에 적합</p>
+                        </div>
+                        <div class="pricing-card">
+                            <h3>비즈니스</h3>
+                            <div class="price">1,000 크레딧</div>
+                            <div class="price-won">70,000원</div>
+                            <p>기업 사용자에게 적합</p>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="showLoginPage(); showRegisterTab();">지금 시작하기</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- 로그인 후 대시보드 -->
+        <div class="dashboard" id="dashboard" style="display: none;">
             <header class="dashboard-header">
                 <h1>AI 에이전트 대시보드</h1>
                 <p>업무 효율성을 높이는 다양한 AI 에이전트를 활용해보세요</p>
@@ -208,14 +505,14 @@
                     </div>
                     
                     <div class="tab-content" id="login-tab">
-                        <form>
+                        <form id="login-form" onsubmit="submitLogin(event)">
                             <div class="form-group">
                                 <label>이메일</label>
-                                <input type="email" placeholder="이메일을 입력하세요">
+                                <input type="email" id="login-email" placeholder="이메일을 입력하세요" required>
                             </div>
                             <div class="form-group">
                                 <label>비밀번호</label>
-                                <input type="password" placeholder="비밀번호를 입력하세요">
+                                <input type="password" id="login-password" placeholder="비밀번호를 입력하세요" required>
                             </div>
                             <button type="submit" class="btn-primary">로그인</button>
                         </form>
@@ -244,47 +541,47 @@
                     </div>
                     
                     <div class="tab-content" id="register-tab" style="display: none;">
-                        <form>
+                        <form id="register-form" onsubmit="submitRegister(event)">
                             <div class="form-group">
                                 <label>계정 유형</label>
-                                <select onchange="toggleCompanyFields(this.value)">
+                                <select id="account-type" onchange="toggleCompanyFields(this.value)">
                                     <option value="individual">개인 계정</option>
                                     <option value="company">회사 계정</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>이름</label>
-                                <input type="text" placeholder="이름을 입력하세요">
+                                <input type="text" id="register-name" placeholder="이름을 입력하세요" required>
                             </div>
                             <div class="form-group">
                                 <label>이메일</label>
-                                <input type="email" placeholder="이메일을 입력하세요">
+                                <input type="email" id="register-email" placeholder="이메일을 입력하세요" required>
                             </div>
                             <div class="form-group">
                                 <label>비밀번호</label>
-                                <input type="password" placeholder="비밀번호를 입력하세요">
+                                <input type="password" id="register-password" placeholder="비밀번호를 입력하세요" required minlength="8">
                             </div>
                             <div class="form-group">
                                 <label>비밀번호 확인</label>
-                                <input type="password" placeholder="비밀번호를 다시 입력하세요">
+                                <input type="password" id="register-password-confirm" placeholder="비밀번호를 다시 입력하세요" required>
                             </div>
                             
-                            <div class="company-fields" style="display: none;">
+                            <div class="company-fields" id="company-fields" style="display: none;">
                                 <div class="form-group">
                                     <label>회사명</label>
-                                    <input type="text" placeholder="회사명을 입력하세요">
+                                    <input type="text" id="company-name" placeholder="회사명을 입력하세요">
                                 </div>
                                 <div class="form-group">
                                     <label>사업자번호</label>
-                                    <input type="text" placeholder="사업자번호를 입력하세요">
+                                    <input type="text" id="business-number" placeholder="사업자번호를 입력하세요">
                                 </div>
                                 <div class="form-group">
                                     <label>부서</label>
-                                    <input type="text" placeholder="부서를 입력하세요">
+                                    <input type="text" id="department" placeholder="부서를 입력하세요">
                                 </div>
                                 <div class="form-group">
                                     <label>직급</label>
-                                    <input type="text" placeholder="직급을 입력하세요">
+                                    <input type="text" id="position" placeholder="직급을 입력하세요">
                                 </div>
                             </div>
                             
@@ -452,6 +749,287 @@
         </div>
     </main>
 
+    <!-- 화면정의 플로팅 버튼 -->
+    <button class="screen-spec-floating-btn" onclick="openScreenSpec()">
+        <i class="fas fa-file-code"></i> 화면정의
+    </button>
+
+    <!-- 화면정의 모달 -->
+    <div id="screenSpecModal" class="screen-spec-modal">
+        <div class="screen-spec-content">
+            <div class="screen-spec-header">
+                <h2><i class="fas fa-desktop"></i> 메인 사용자 페이지 화면정의서</h2>
+                <div class="header-buttons">
+                    <button class="btn-header-action" onclick="window.open('화면정의서-웹문서.html', '_blank')" title="전체 화면정의서 보기">
+                        <i class="fas fa-external-link-alt"></i> 전체 정의서
+                    </button>
+                    <button class="screen-spec-close" onclick="closeScreenSpec()">&times;</button>
+                </div>
+            </div>
+            <div class="screen-spec-body">
+                
+                <!-- 페이지 개요 -->
+                <div class="spec-section">
+                    <h3>📋 페이지 개요</h3>
+                    <p><strong>파일명:</strong> index.html</p>
+                    <p><strong>용도:</strong> 일반 사용자를 위한 메인 페이지 (로그인 전/후 모두 포함)</p>
+                    <p><strong>사용자 타입:</strong> 개인 사용자, 회사 소속 직원</p>
+                    
+                    <h4>주요 상태</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">로그인 전 홈페이지</span>
+                            <span class="component-desc">서비스 소개, 기능 설명, 가격 정보</span>
+                        </li>
+                        <li>
+                            <span class="component-name">로그인/회원가입 모달</span>
+                            <span class="component-desc">사용자 인증 처리</span>
+                        </li>
+                        <li>
+                            <span class="component-name">로그인 후 대시보드</span>
+                            <span class="component-desc">AI 에이전트 사용 인터페이스</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- UI 컴포넌트 -->
+                <div class="spec-section">
+                    <h3>🎨 UI 컴포넌트 정의</h3>
+                    
+                    <h4>Navigation Bar</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">로고 영역</span>
+                            <span class="component-desc">Robot 아이콘 + "AI 에이전트 허브" 텍스트</span>
+                        </li>
+                        <li>
+                            <span class="component-name">로그인 전 메뉴</span>
+                            <span class="component-desc">화면정의서, 로그인, 회원가입 버튼</span>
+                        </li>
+                        <li>
+                            <span class="component-name">로그인 후 메뉴</span>
+                            <span class="component-desc">화면정의서, 크레딧 표시, 사용자 드롭다운</span>
+                        </li>
+                    </ul>
+
+                    <h4>Hero Section (로그인 전)</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">메인 타이틀</span>
+                            <span class="component-desc">"AI 에이전트로 업무 효율성을 혁신하세요"</span>
+                        </li>
+                        <li>
+                            <span class="component-name">CTA 버튼</span>
+                            <span class="component-desc">"무료로 시작하기", "기능 둘러보기"</span>
+                        </li>
+                        <li>
+                            <span class="component-name">Hero 아이콘</span>
+                            <span class="component-desc">대형 Robot 아이콘</span>
+                        </li>
+                    </ul>
+
+                    <h4>AI 에이전트 대시보드 (로그인 후)</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">일반사무 카테고리</span>
+                            <span class="component-desc">회의록, 이메일, PPT, 음성문서 (4개)</span>
+                        </li>
+                        <li>
+                            <span class="component-name">마케팅/광고 카테고리</span>
+                            <span class="component-desc">리뷰분석, 키워드, SNS이벤트, 광고문구 (4개)</span>
+                        </li>
+                        <li>
+                            <span class="component-name">콘텐츠 제작 카테고리</span>
+                            <span class="component-desc">카드뉴스, 블로그 (2개)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 기술 스펙 -->
+                <div class="spec-section">
+                    <h3>⚙️ 기술 사양</h3>
+                    
+                    <h4>필수 기술 스택</h4>
+                    <div>
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript ES6+</span>
+                        <span class="tech-tag">Font Awesome</span>
+                        <span class="tech-tag">LocalStorage</span>
+                    </div>
+
+                    <h4>반응형 브레이크포인트</h4>
+                    <div class="code-snippet">
+/* 모바일: 320px ~ 768px */
+@media (max-width: 768px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .nav-menu { flex-direction: column; }
+}
+
+/* 태블릿: 768px ~ 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 데스크톱: 1024px 이상 */
+@media (min-width: 1024px) {
+  .features-grid { grid-template-columns: repeat(3, 1fr); }
+}
+                    </div>
+                </div>
+
+                <!-- 인터랙션 -->
+                <div class="spec-section">
+                    <h3>🔄 인터랙션 정의</h3>
+                    
+                    <h4>로그인/회원가입 플로우</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">모달 열기</span>
+                            <span class="component-desc">showLoginPage() 함수 호출</span>
+                        </li>
+                        <li>
+                            <span class="component-name">탭 전환</span>
+                            <span class="component-desc">로그인 ↔ 회원가입 탭 전환</span>
+                        </li>
+                        <li>
+                            <span class="component-name">계정 유형 선택</span>
+                            <span class="component-desc">개인/회사 선택 시 추가 필드 표시</span>
+                        </li>
+                        <li>
+                            <span class="component-name">유효성 검증</span>
+                            <span class="component-desc">이메일 형식, 비밀번호 6자 이상</span>
+                        </li>
+                    </ul>
+
+                    <h4>AI 에이전트 실행 플로우</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">에이전트 선택</span>
+                            <span class="component-desc">openAgent(agentId) 함수 호출</span>
+                        </li>
+                        <li>
+                            <span class="component-name">크레딧 확인</span>
+                            <span class="component-desc">잔액 부족 시 충전 페이지 리다이렉트</span>
+                        </li>
+                        <li>
+                            <span class="component-name">결과 표시</span>
+                            <span class="component-desc">시뮬레이션 결과 및 다운로드 옵션</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 데이터 구조 -->
+                <div class="spec-section">
+                    <h3>📊 데이터 구조</h3>
+                    
+                    <h4>사용자 인증 상태</h4>
+                    <div class="code-snippet">
+// 전역 변수
+let isLoggedIn = false;
+let currentUser = null;
+
+// 로그인 상태 확인
+function checkLoginStatus() {
+  currentUser = dataManager.getCurrentUser();
+  isLoggedIn = !!currentUser;
+  
+  // 역할별 리다이렉트
+  if (currentUser?.role === 'admin') {
+    window.location.href = 'admin.html';
+  } else if (currentUser?.role === 'company_admin') {
+    window.location.href = 'company-admin.html';
+  }
+}
+                    </div>
+
+                    <h4>에이전트 데이터</h4>
+                    <div class="code-snippet">
+// AI 에이전트 구조
+{
+  id: 'meeting-notes',
+  title: '회의록 자동화 AI',
+  description: '회의 내용을 체계적인 회의록으로 자동 변환',
+  icon: 'fas fa-file-alt',
+  credits: 15,
+  category: '일반사무'
+}
+                    </div>
+                </div>
+
+                <!-- 개발 체크리스트 -->
+                <div class="spec-section">
+                    <h3>✅ 개발 체크리스트</h3>
+                    
+                    <h4>필수 구현 기능</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">✓ 로그인/회원가입 모달</span>
+                            <span class="component-desc">탭 전환, 유효성 검증 포함</span>
+                        </li>
+                        <li>
+                            <span class="component-name">✓ 반응형 네비게이션</span>
+                            <span class="component-desc">로그인 상태별 메뉴 전환</span>
+                        </li>
+                        <li>
+                            <span class="component-name">✓ AI 에이전트 카드</span>
+                            <span class="component-desc">10개 에이전트 카테고리별 정렬</span>
+                        </li>
+                        <li>
+                            <span class="component-name">✓ 크레딧 시스템</span>
+                            <span class="component-desc">잔액 표시, 사용량 차감</span>
+                        </li>
+                    </ul>
+
+                    <h4>테스트 시나리오</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">회원가입 플로우</span>
+                            <span class="component-desc">개인/회사 계정 모두 테스트</span>
+                        </li>
+                        <li>
+                            <span class="component-name">에이전트 실행</span>
+                            <span class="component-desc">10개 에이전트 모든 기능 테스트</span>
+                        </li>
+                        <li>
+                            <span class="component-name">반응형 테스트</span>
+                            <span class="component-desc">모바일, 태블릿, 데스크톱</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="data-manager.js"></script>
     <script src="script.js"></script>
+    
+    <!-- 화면정의 모달 스크립트 -->
+    <script>
+        function openScreenSpec() {
+            document.getElementById('screenSpecModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeScreenSpec() {
+            document.getElementById('screenSpecModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('screenSpecModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeScreenSpec();
+            }
+        });
+        
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeScreenSpec();
+            }
+        });
+    </script>
 </body>
 </html>

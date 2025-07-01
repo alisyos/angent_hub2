@@ -1,33 +1,35 @@
-# AI 에이전트 허브 플랫폼 - 목업 사이트
+# AI Agent Hub Platform
 
-이 프로젝트는 AI 에이전트 허브 플랫폼의 UI/UX 검토를 위한 목업 사이트입니다.
+AI Agent Hub는 다양한 AI 에이전트를 통합 관리하고 활용할 수 있는 실제 테스트 가능한 플랫폼입니다.
 
 ## 📋 프로젝트 개요
 
-**프로젝트명**: AI 에이전트 허브 플랫폼 구축
-**목적**: 다양한 업무 지원 AI 에이전트를 통합한 플랫폼 목업 구현
+**프로젝트명**: AI 에이전트 허브 플랫폼
+**목적**: 다양한 업무 지원 AI 에이전트를 통합한 실제 테스트 가능한 플랫폼 구현
+**특징**: 
+- 실제 회원가입/로그인 기능
+- 통합된 데이터 관리 시스템
+- 관리자/사용자 페이지 연동
+- Vercel 배포 지원
 
 ## 🚀 주요 기능
 
-### 1. 사용자 페이지 (index.html)
-- **메인 대시보드**: AI 에이전트 카테고리별 분류 및 표시
-- **회원가입/로그인**: 개인/회사 계정 지원, 소셜 로그인 연동
-- **AI 에이전트 실행**: 간편한 입력 방식과 결과 출력
-- **크레딧 충전**: 다양한 결제 수단 지원
+### 1. 사용자 기능
+- **로그인 전 홈페이지**: 서비스 소개 및 가격 정보
+- **실제 회원가입/로그인**: 개인/회사 계정 지원
+- **AI 에이전트 실행**: 실제 크레딧 차감 및 결과 출력
+- **크레딧 시스템**: 충전, 사용, 잔액 관리
 
-### 2. 회사 관리자 페이지 (company-admin.html)
-- **직원 관리**: 직원 초대, 계정 관리, 사용량 모니터링
-- **권한 관리**: 부서별/직급별 에이전트 사용 권한 설정
-- **에이전트 설정**: 회사 내 사용 가능한 에이전트 선택
-- **크레딧 관리**: 회사 크레딧 사용량 분석 및 관리
-- **사용 분석**: 부서별 사용 패턴 분석
+### 2. 관리자 기능
+- **통합 데이터 관리**: LocalStorage 기반 실시간 데이터 연동
+- **권한 기반 접근**: 역할별 페이지 접근 제어
+- **실시간 통계**: 사용자, 에이전트, 사용량 현황
+- **데이터 조작**: 사용자/에이전트 추가, 수정, 삭제
 
-### 3. 시스템 관리자 페이지 (admin.html)
-- **대시보드**: 전체 플랫폼 통계 및 현황
-- **회원 관리**: 전체 회원 정보 조회 및 관리
-- **AI 에이전트 관리**: 프롬프트 수정, LLM 모델 변경
-- **크레딧 관리**: 패키지 관리, 결제 현황
-- **로그 및 통계**: 시스템 로그, 사용 통계
+### 3. 시스템 통합
+- **페이지 간 데이터 연동**: 모든 페이지가 동일한 데이터 공유
+- **실시간 업데이트**: 한 페이지에서의 변경사항이 다른 페이지에 즉시 반영
+- **인증 시스템**: 실제 이메일/비밀번호 검증
 
 ## 🤖 포함된 AI 에이전트
 
@@ -58,9 +60,48 @@
 ## 🛠️ 기술 스택
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **스타일링**: CSS Grid, Flexbox, CSS Custom Properties
-- **아이콘**: Font Awesome 6.0
-- **반응형**: Mobile-first 접근법
+- **Data Management**: LocalStorage 기반 클라이언트 사이드 데이터베이스
+- **Authentication**: 자체 구현 인증 시스템
+- **Icons**: Font Awesome 6.0
+- **Deployment**: Vercel
+- **Architecture**: SPA (Single Page Application) 컨셉
+
+## 🔐 기본 테스트 계정
+
+### 시스템 관리자
+- **이메일**: admin@agenthub.com
+- **비밀번호**: admin123
+- **접근**: /admin.html
+
+### 회사 관리자
+- **이메일**: manager@company.com
+- **비밀번호**: company123
+- **접근**: /company-admin.html
+
+### 일반 사용자
+- **이메일**: user@test.com
+- **비밀번호**: user123
+- **접근**: 메인 사이트
+
+## 🚀 Vercel 배포 가이드
+
+### 1. GitHub 연동 배포
+1. GitHub에 리포지토리 생성
+2. 코드 푸시
+3. Vercel에서 Import
+4. 자동 배포 완료
+
+### 2. CLI 배포
+```bash
+npm install -g vercel
+vercel login
+vercel --prod
+```
+
+### 3. 도메인 설정
+```bash
+vercel domains add your-domain.com
+```
 
 ## 📱 반응형 브레이크포인트
 
@@ -88,36 +129,56 @@
 3. 회원 및 결제 관리
 4. 시스템 운영
 
-## 🔧 설치 및 실행
+## 🔧 로컬 개발 환경 설정
 
-1. 프로젝트 파일 다운로드
-2. 웹 서버에 업로드 또는 로컬 서버 실행
-3. index.html 파일을 브라우저에서 열기
-
+### 1. 프로젝트 클론
 ```bash
-# 로컬 서버 실행 (Python 3)
-python -m http.server 8000
-
-# 또는 Node.js live-server 사용
-npx live-server
+git clone <repository-url>
+cd ai-agent-hub
 ```
+
+### 2. 의존성 설치
+```bash
+npm install
+```
+
+### 3. 개발 서버 실행
+```bash
+# Vercel Dev 서버 (권장)
+npm run dev
+
+# 또는 간단한 HTTP 서버
+npx live-server
+# 또는
+python -m http.server 8000
+```
+
+### 4. 브라우저에서 확인
+- **메인 사이트**: http://localhost:3000
+- **관리자 페이지**: http://localhost:3000/admin.html
+- **회사 관리자**: http://localhost:3000/company-admin.html
 
 ## 📂 파일 구조
 
 ```
-angent_hub2/
+ai-agent-hub/
 ├── index.html              # 메인 사용자 페이지
 ├── admin.html              # 시스템 관리자 페이지
 ├── company-admin.html      # 회사 관리자 페이지
-├── styles.css              # 공통 스타일
-├── admin-styles.css        # 관리자 페이지 스타일
-├── company-admin-styles.css # 회사 관리자 스타일
+├── data-manager.js         # 전역 데이터 관리 시스템 ⭐
 ├── script.js               # 메인 JavaScript
 ├── admin-script.js         # 관리자 JavaScript
 ├── company-admin-script.js # 회사 관리자 JavaScript
+├── styles.css              # 공통 스타일
+├── admin-styles.css        # 관리자 페이지 스타일
+├── company-admin-styles.css # 회사 관리자 스타일
+├── package.json            # 프로젝트 설정 ⭐
+├── vercel.json             # Vercel 배포 설정 ⭐
 ├── requirement.txt         # 프로젝트 요구사항
 └── README.md              # 프로젝트 문서
 ```
+
+⭐ = 새로 추가된 핵심 파일
 
 ## 🎨 색상 팔레트
 

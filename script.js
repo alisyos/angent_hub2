@@ -1,23 +1,57 @@
 // 현재 표시되는 페이지 상태 관리
 let currentPage = 'dashboard';
 let selectedPackage = null;
+let isLoggedIn = false;
+let currentUser = null;
 
 // 초기화
 document.addEventListener('DOMContentLoaded', function() {
-    showDashboard();
+    // 로그인 상태 확인
+    checkLoginStatus();
+    
+    // 페이지 표시
+    if (!isLoggedIn) {
+        showHomePage();
+    } else {
+        showDashboard();
+        updateUserInfo();
+    }
+    updateNavigation();
+    loadAgents();
 });
+
+// 로그인 상태 확인
+function checkLoginStatus() {
+    currentUser = dataManager.getCurrentUser();
+    isLoggedIn = !!currentUser;
+    
+    // 관리자 계정인 경우 해당 페이지로 리다이렉트
+    if (currentUser) {
+        if (currentUser.role === 'admin') {
+            window.location.href = 'admin.html';
+            return;
+        } else if (currentUser.role === 'company_admin') {
+            window.location.href = 'company-admin.html';
+            return;
+        }
+    }
+}
 
 // 페이지 전환 함수들
 function showDashboard() {
     hideAllPages();
     document.getElementById('dashboard').style.display = 'block';
     currentPage = 'dashboard';
+    updateNavigation();
+    updateUserInfo();
+    loadAgents();
 }
 
 function showLoginPage() {
     hideAllPages();
     document.getElementById('login-page').style.display = 'block';
     currentPage = 'login';
+    updateNavigation();
 }
 
 function showAgentPage() {
@@ -30,16 +64,24 @@ function showCreditCharge() {
     hideAllPages();
     document.getElementById('credit-page').style.display = 'block';
     currentPage = 'credit';
+    updateUserInfo(); // 크레딧 페이지에서도 사용자 정보 업데이트
 }
 
 function hideAllPages() {
-    const pages = ['dashboard', 'login-page', 'agent-page', 'credit-page'];
+    const pages = ['home-page', 'dashboard', 'login-page', 'agent-page', 'credit-page'];
     pages.forEach(pageId => {
         const page = document.getElementById(pageId);
         if (page) {
             page.style.display = 'none';
         }
     });
+}
+
+function showHomePage() {
+    hideAllPages();
+    document.getElementById('home-page').style.display = 'block';
+    currentPage = 'home';
+    updateNavigation();
 }
 
 function goBack() {
@@ -57,6 +99,9 @@ function showLoginTab() {
     const tabs = document.querySelectorAll('.tab-btn');
     tabs[0].classList.add('active');
     tabs[1].classList.remove('active');
+    
+    // 폼 리셋
+    document.getElementById('login-form').reset();
 }
 
 function showRegisterTab() {
@@ -67,11 +112,15 @@ function showRegisterTab() {
     const tabs = document.querySelectorAll('.tab-btn');
     tabs[0].classList.remove('active');
     tabs[1].classList.add('active');
+    
+    // 폼 리셋
+    document.getElementById('register-form').reset();
+    toggleCompanyFields('individual');
 }
 
 // 회사 계정 필드 토글
 function toggleCompanyFields(accountType) {
-    const companyFields = document.querySelector('.company-fields');
+    const companyFields = document.getElementById('company-fields');
     if (accountType === 'company') {
         companyFields.style.display = 'block';
     } else {
@@ -79,88 +128,114 @@ function toggleCompanyFields(accountType) {
     }
 }
 
+// 로그인 폼 제출
+function submitLogin(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    
+    if (!email || !password) {
+        showAlert('이메일과 비밀번호를 입력해주세요.', 'error');
+        return;
+    }
+    
+    if (handleLogin(email, password)) {
+        // 로그인 성공 시 폼 초기화
+        document.getElementById('login-form').reset();
+    }
+}
+
+// 회원가입 폼 제출
+function submitRegister(event) {
+    event.preventDefault();
+    
+    const password = document.getElementById('register-password').value;
+    const passwordConfirm = document.getElementById('register-password-confirm').value;
+    
+    if (password !== passwordConfirm) {
+        showAlert('비밀번호가 일치하지 않습니다.', 'error');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showAlert('비밀번호는 6자 이상이어야 합니다.', 'error');
+        return;
+    }
+    
+    const accountType = document.getElementById('account-type').value;
+    const formData = {
+        accountType: accountType,
+        name: document.getElementById('register-name').value.trim(),
+        email: document.getElementById('register-email').value.trim(),
+        password: password,
+        role: accountType === 'company' ? 'company_admin' : 'user'
+    };
+    
+    // 회사 계정인 경우 추가 정보
+    if (accountType === 'company') {
+        formData.companyName = document.getElementById('company-name').value.trim();
+        formData.businessNumber = document.getElementById('business-number').value.trim();
+        formData.department = document.getElementById('department').value.trim();
+        formData.position = document.getElementById('position').value.trim();
+    }
+    
+    if (handleRegister(formData)) {
+        // 회원가입 성공 시 폼 초기화
+        document.getElementById('register-form').reset();
+        toggleCompanyFields('individual');
+    }
+}
+
 // AI 에이전트 실행 페이지 열기
-function openAgent(agentType) {
-    const agentData = getAgentData(agentType);
+function openAgent(agentId) {
+    const agent = dataManager.getAgentById(agentId);
+    if (!agent) {
+        showAlert('에이전트를 찾을 수 없습니다.', 'error');
+        return;
+    }
+    
+    // 로그인 확인
+    if (!isLoggedIn) {
+        showAlert('로그인이 필요합니다.', 'warning');
+        showLoginPage();
+        return;
+    }
+    
+    // 크레딧 확인
+    if (currentUser.credits < agent.credits) {
+        showAlert(`크레딧이 부족합니다. 필요 크레딧: ${agent.credits}, 보유 크레딧: ${currentUser.credits}`, 'warning');
+        showCreditCharge();
+        return;
+    }
     
     // 에이전트 정보 업데이트
-    document.getElementById('agent-title').textContent = agentData.title;
-    document.getElementById('agent-description').textContent = agentData.description;
-    document.getElementById('required-credits').textContent = agentData.credits;
+    document.getElementById('agent-title').textContent = agent.title;
+    document.getElementById('agent-description').textContent = agent.description;
+    document.getElementById('required-credits').textContent = agent.credits;
+    
+    // 현재 에이전트 ID 저장
+    window.currentAgentId = agentId;
     
     // 아이콘 업데이트
     const agentIcon = document.querySelector('.agent-header .agent-icon i');
-    agentIcon.className = agentData.icon;
+    if (agentIcon) {
+        agentIcon.className = agent.icon;
+    }
+    
+    // 입력 폼 초기화
+    const inputField = document.getElementById('agent-input');
+    if (inputField) {
+        inputField.value = '';
+    }
+    
+    // 결과 영역 초기화
+    const resultArea = document.getElementById('agent-result');
+    if (resultArea) {
+        resultArea.style.display = 'none';
+    }
     
     showAgentPage();
-}
-
-// 에이전트 데이터 가져오기
-function getAgentData(agentType) {
-    const agents = {
-        'meeting-notes': {
-            title: '회의록 자동화 AI',
-            description: '회의 내용을 체계적인 회의록으로 자동 변환',
-            icon: 'fas fa-file-alt',
-            credits: 15
-        },
-        'email-writer': {
-            title: '이메일 작성 AI',
-            description: '목적에 맞는 전문적인 이메일 자동 작성',
-            icon: 'fas fa-envelope',
-            credits: 10
-        },
-        'ppt-generator': {
-            title: 'AI PPT 슬라이드 생성기',
-            description: '내용을 바탕으로 전문적인 프레젠테이션 생성',
-            icon: 'fas fa-presentation',
-            credits: 25
-        },
-        'voice-document': {
-            title: '음성파일 기반 문서 자동화',
-            description: '음성 파일을 다양한 문서 형태로 변환',
-            icon: 'fas fa-microphone',
-            credits: 20
-        },
-        'review-analysis': {
-            title: '리뷰 분석 AI',
-            description: '고객 리뷰를 분석하여 인사이트 제공',
-            icon: 'fas fa-chart-line',
-            credits: 18
-        },
-        'keyword-analysis': {
-            title: '키워드 분석',
-            description: '키워드 트렌드와 경쟁 상황 분석',
-            icon: 'fas fa-search',
-            credits: 22
-        },
-        'sns-event': {
-            title: 'SNS 이벤트 기획 AI',
-            description: '효과적인 SNS 이벤트 기획안 생성',
-            icon: 'fas fa-calendar-star',
-            credits: 30
-        },
-        'ad-analysis': {
-            title: '광고 문구 분석 및 제안',
-            description: '광고 효과 분석 및 개선안 제안',
-            icon: 'fas fa-ad',
-            credits: 28
-        },
-        'card-news': {
-            title: 'AI 카드뉴스 생성기',
-            description: '매력적인 카드뉴스 콘텐츠 자동 생성',
-            icon: 'fas fa-images',
-            credits: 35
-        },
-        'blog-generator': {
-            title: 'AI 블로그 생성기',
-            description: 'SEO 최적화된 블로그 포스팅 자동 생성',
-            icon: 'fas fa-blog',
-            credits: 25
-        }
-    };
-    
-    return agents[agentType] || agents['meeting-notes'];
 }
 
 // 크레딧 패키지 선택
@@ -183,46 +258,265 @@ function selectPackage(credits, price) {
 // 결제 처리
 function processPayment() {
     if (!selectedPackage) {
-        alert('크레딧 패키지를 선택해주세요.');
+        showAlert('크레딧 패키지를 선택해주세요.', 'warning');
         return;
     }
     
-    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+    if (!isLoggedIn || !currentUser) {
+        showAlert('로그인이 필요합니다.', 'warning');
+        showLoginPage();
+        return;
+    }
     
-    // 실제로는 결제 API를 호출하지만, 목업에서는 성공 메시지만 표시
-    alert(`${selectedPackage.credits} 크레딧 결제가 완료되었습니다!\n결제 방법: ${getPaymentMethodName(paymentMethod)}\n결제 금액: ${selectedPackage.price.toLocaleString()}원`);
+    const paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+    if (!paymentMethod) {
+        showAlert('결제 수단을 선택해주세요.', 'warning');
+        return;
+    }
     
-    // 크레딧 잔액 업데이트 (시뮬레이션)
-    updateCreditBalance(selectedPackage.credits);
+    // 결제 시뮬레이션
+    const loadingElement = document.querySelector('.payment-loading');
+    if (loadingElement) {
+        loadingElement.style.display = 'block';
+    }
     
-    // 대시보드로 돌아가기
-    showDashboard();
+    setTimeout(() => {
+        // 크레딧 추가
+        const updatedUser = dataManager.addCredits(currentUser.id, selectedPackage.credits);
+        if (updatedUser) {
+            currentUser = updatedUser;
+            // 현재 사용자 정보 업데이트
+            localStorage.setItem('agenthub_current_user', JSON.stringify(currentUser));
+            
+            showAlert(`${selectedPackage.credits} 크레딧이 충전되었습니다!`, 'success');
+            updateUserInfo();
+            
+            // 선택 상태 초기화
+            selectedPackage = null;
+            document.querySelectorAll('.package-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.getElementById('selected-package').textContent = '선택된 패키지 없음';
+            document.getElementById('payment-amount').textContent = '0원';
+            
+            // 결제 방법 선택 해제
+            document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+                radio.checked = false;
+            });
+        } else {
+            showAlert('크레딧 충전에 실패했습니다.', 'error');
+        }
+        
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    }, 2000);
 }
 
-// 결제 방법 이름 반환
 function getPaymentMethodName(method) {
     const methods = {
-        'card': '신용카드/체크카드',
-        'naverpay': '네이버페이',
-        'kakaopay': '카카오페이',
-        'tosspay': '토스페이'
+        'card': '신용/체크카드',
+        'bank': '계좌이체',
+        'phone': '휴대폰 결제',
+        'kakao': '카카오페이',
+        'naver': '네이버페이'
     };
-    return methods[method] || '신용카드';
+    return methods[method] || method;
 }
 
-// 크레딧 잔액 업데이트
-function updateCreditBalance(additionalCredits) {
-    const creditElements = document.querySelectorAll('#credit-amount, .credit-balance strong');
-    creditElements.forEach(element => {
-        const currentCredits = parseInt(element.textContent.replace(/,/g, ''));
-        const newCredits = currentCredits + additionalCredits;
-        element.textContent = newCredits.toLocaleString();
-    });
+// AI 에이전트 실행
+function executeAgent() {
+    if (!isLoggedIn || !currentUser) {
+        showAlert('로그인이 필요합니다.', 'warning');
+        return;
+    }
+    
+    const agentId = window.currentAgentId;
+    const agent = dataManager.getAgentById(agentId);
+    
+    if (!agent) {
+        showAlert('에이전트 정보를 찾을 수 없습니다.', 'error');
+        return;
+    }
+    
+    const input = document.getElementById('agent-input').value.trim();
+    if (!input) {
+        showAlert('입력 내용을 작성해주세요.', 'warning');
+        return;
+    }
+    
+    // 크레딧 확인
+    if (currentUser.credits < agent.credits) {
+        showAlert(`크레딧이 부족합니다. 필요: ${agent.credits}, 보유: ${currentUser.credits}`, 'warning');
+        return;
+    }
+    
+    // 로딩 상태 표시
+    const executeBtn = document.querySelector('.execute-btn');
+    const originalText = executeBtn.textContent;
+    executeBtn.textContent = '실행 중...';
+    executeBtn.disabled = true;
+    
+    // AI 에이전트 실행 시뮬레이션
+    setTimeout(() => {
+        // 크레딧 차감
+        const updatedUser = dataManager.deductCredits(currentUser.id, agent.credits);
+        if (updatedUser) {
+            currentUser = updatedUser;
+            localStorage.setItem('agenthub_current_user', JSON.stringify(currentUser));
+            
+            // 사용 기록 추가
+            dataManager.addUsageRecord(currentUser.id, agentId, agent.credits);
+            
+            // 결과 생성 및 표시
+            const result = generateMockResult(agent.title, input);
+            displayAgentResult(result);
+            
+            // 사용자 정보 업데이트
+            updateUserInfo();
+            
+            showAlert('AI 에이전트 실행이 완료되었습니다!', 'success');
+        } else {
+            showAlert('크레딧 차감에 실패했습니다.', 'error');
+        }
+        
+        // 버튼 상태 복원
+        executeBtn.textContent = originalText;
+        executeBtn.disabled = false;
+    }, 3000);
 }
 
-// 네비게이션 메뉴 함수들
+// 에이전트 결과 표시
+function displayAgentResult(result) {
+    const resultArea = document.getElementById('agent-result');
+    const resultContent = document.getElementById('result-content');
+    
+    if (resultArea && resultContent) {
+        resultContent.innerHTML = result;
+        resultArea.style.display = 'block';
+        
+        // 결과 영역으로 스크롤
+        resultArea.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function getCurrentAgentId() {
+    return window.currentAgentId;
+}
+
+function generateMockResult(agentTitle, input) {
+    const results = {
+        '회의록 자동화 AI': `
+            <h3>📋 회의록</h3>
+            <div class="result-section">
+                <h4>회의 정보</h4>
+                <ul>
+                    <li><strong>날짜:</strong> ${new Date().toLocaleDateString('ko-KR')}</li>
+                    <li><strong>참석자:</strong> ${currentUser.name} 외 3명</li>
+                    <li><strong>주제:</strong> ${input}</li>
+                </ul>
+            </div>
+            <div class="result-section">
+                <h4>주요 논의사항</h4>
+                <ol>
+                    <li>프로젝트 진행 현황 검토</li>
+                    <li>예산 배정 및 리소스 배분</li>
+                    <li>일정 조정 및 마일스톤 설정</li>
+                </ol>
+            </div>
+            <div class="result-section">
+                <h4>결정사항</h4>
+                <ul>
+                    <li>다음 주까지 프로토타입 완성</li>
+                    <li>추가 인력 2명 투입 결정</li>
+                    <li>주간 진행 상황 보고 미팅 신설</li>
+                </ul>
+            </div>
+        `,
+        '이메일 작성 AI': `
+            <h3>📧 생성된 이메일</h3>
+            <div class="result-section">
+                <div class="email-content">
+                    <p><strong>제목:</strong> ${input} 관련 문의</p>
+                    <br>
+                    <p>안녕하세요,</p>
+                    <br>
+                    <p>${input}에 대해 문의드리고자 연락드립니다.</p>
+                    <br>
+                    <p>구체적으로 다음 사항들에 대해 알고 싶습니다:</p>
+                    <ul>
+                        <li>세부 진행 과정 및 일정</li>
+                        <li>필요한 준비사항</li>
+                        <li>예상 소요 시간</li>
+                    </ul>
+                    <br>
+                    <p>빠른 시일 내에 답변 주시면 감사하겠습니다.</p>
+                    <br>
+                    <p>감사합니다.</p>
+                    <p>${currentUser.name} 드림</p>
+                </div>
+            </div>
+        `,
+        'AI PPT 슬라이드 생성기': `
+            <h3>🎯 PPT 슬라이드 구성안</h3>
+            <div class="result-section">
+                <h4>제목: ${input}</h4>
+                <ol>
+                    <li><strong>표지 슬라이드</strong>
+                        <ul><li>제목, 부제목, 발표자, 날짜</li></ul>
+                    </li>
+                    <li><strong>목차</strong>
+                        <ul><li>발표 순서 및 주요 내용</li></ul>
+                    </li>
+                    <li><strong>현황 분석</strong>
+                        <ul><li>현재 상황 및 문제점 파악</li></ul>
+                    </li>
+                    <li><strong>해결방안</strong>
+                        <ul><li>구체적인 솔루션 제시</li></ul>
+                    </li>
+                    <li><strong>기대효과</strong>
+                        <ul><li>예상 성과 및 ROI</li></ul>
+                    </li>
+                    <li><strong>실행계획</strong>
+                        <ul><li>단계별 추진 일정</li></ul>
+                    </li>
+                    <li><strong>마무리</strong>
+                        <ul><li>요약 및 Q&A</li></ul>
+                    </li>
+                </ol>
+            </div>
+        `
+    };
+    
+    return results[agentTitle] || `
+        <h3>🤖 AI 분석 결과</h3>
+        <div class="result-section">
+            <p><strong>입력 내용:</strong> ${input}</p>
+            <p><strong>분석 완료:</strong> ${new Date().toLocaleString('ko-KR')}</p>
+            <p><strong>처리 결과:</strong> 요청하신 내용에 대한 AI 분석이 완료되었습니다. 상세한 결과를 확인해보세요.</p>
+        </div>
+    `;
+}
+
+function getMockContent(agentTitle) {
+    const contents = {
+        '회의록 자동화 AI': '2024년 2분기 마케팅 전략 회의록이 생성되었습니다. 주요 결정사항: 디지털 마케팅 예산 20% 증액, 인플루언서 마케팅 강화...',
+        '이메일 작성 AI': '비즈니스 이메일이 작성되었습니다. 제목: "2분기 프로젝트 진행 현황 안내", 내용: 안녕하세요. 2분기 프로젝트의 현재 진행 상황을...',
+        'AI PPT 슬라이드 생성기': '총 15장의 프레젠테이션 슬라이드가 생성되었습니다. 표지, 목차, 현황 분석, 전략 수립, 실행 계획 등의 구성으로...',
+        '음성파일 기반 문서 자동화': '음성 파일이 텍스트로 변환되고 문서화되었습니다. 총 1,250단어, 3페이지 분량의 회의 내용이 정리되었습니다...',
+        '리뷰 분석 AI': '총 500개의 고객 리뷰를 분석했습니다. 긍정 리뷰 72%, 부정 리뷰 28%. 주요 키워드: 품질 우수, 빠른 배송, 친절한 서비스...',
+        '키워드 분석': '키워드 "AI 마케팅" 분석 완료. 월간 검색량 45,000회, 경쟁도 중간, 관련 키워드 120개 발견...',
+        'SNS 이벤트 기획 AI': 'SNS 이벤트 기획안이 생성되었습니다. 이벤트명: "AI와 함께하는 스마트 라이프", 기간: 2주, 예상 참여자: 5,000명...',
+        '광고 문구 분석 및 제안': '현재 광고 문구의 CTR 3.2% 분석 완료. 개선된 문구 5개 제안. 예상 CTR 향상률 40%...',
+        'AI 카드뉴스 생성기': '총 8장의 카드뉴스가 생성되었습니다. 테마: 친환경 라이프스타일, 컬러: 그린&화이트, 해시태그 20개 포함...',
+        'AI 블로그 생성기': 'SEO 최적화된 블로그 포스팅이 생성되었습니다. 제목: "2024년 AI 트렌드 완벽 가이드", 2,500단어, 메타 설명 포함...'
+    };
+    
+    return contents[agentTitle] || 'AI 에이전트가 성공적으로 작업을 완료했습니다.';
+}
+
 function showProfile() {
-    alert('프로필 관리 페이지로 이동합니다.');
+    showAlert('프로필 페이지는 준비 중입니다.', 'info');
 }
 
 function showCreditManagement() {
@@ -230,85 +524,281 @@ function showCreditManagement() {
 }
 
 function logout() {
-    if (confirm('로그아웃 하시겠습니까?')) {
-        showLoginPage();
-    }
+    dataManager.logout();
+    currentUser = null;
+    isLoggedIn = false;
+    showHomePage();
+    updateNavigation();
+    showAlert('로그아웃되었습니다.', 'info');
 }
 
-// AI 에이전트 실행 시뮬레이션
-document.addEventListener('DOMContentLoaded', function() {
-    const executeBtn = document.querySelector('.execute-btn');
-    if (executeBtn) {
-        executeBtn.addEventListener('click', function() {
-            const resultSection = document.querySelector('.result-placeholder');
-            const requiredCredits = parseInt(document.getElementById('required-credits').textContent);
-            const currentCredits = parseInt(document.getElementById('credit-amount').textContent.replace(/,/g, ''));
+function updateNavigation() {
+    const guestMenu = document.getElementById('nav-menu-guest');
+    const loggedInMenu = document.getElementById('nav-menu-logged-in');
+    
+    if (isLoggedIn && currentUser) {
+        // 게스트 메뉴 숨기기
+        if (guestMenu) guestMenu.style.display = 'none';
+        
+        // 로그인된 사용자 메뉴 표시
+        if (loggedInMenu) {
+            loggedInMenu.style.display = 'flex';
             
-            if (currentCredits < requiredCredits) {
-                alert('크레딧이 부족합니다. 크레딧을 충전해주세요.');
-                return;
+            // 사용자 이름 업데이트
+            const userNameElement = document.getElementById('user-name');
+            if (userNameElement) {
+                userNameElement.textContent = currentUser.name;
             }
             
-            // 로딩 상태 표시
-            resultSection.innerHTML = `
-                <div style="text-align: center; padding: 3rem 1rem; color: #667eea;">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                    <p>AI가 작업을 수행하고 있습니다...</p>
-                </div>
-            `;
-            
-            // 3초 후 결과 표시 (시뮬레이션)
-            setTimeout(() => {
-                resultSection.innerHTML = `
-                    <div style="text-align: left; padding: 1rem; background: white; border-radius: 8px; border: 1px solid #eee;">
-                        <h4 style="color: #333; margin-bottom: 1rem;">📋 회의록</h4>
-                        <div style="margin-bottom: 1rem;">
-                            <strong>회의 제목:</strong> 2024년 2분기 마케팅 전략 회의<br>
-                            <strong>일시:</strong> 2024년 6월 26일 14:00-15:30<br>
-                            <strong>참석자:</strong> 홍길동, 김철수, 이영희, 박민수
-                        </div>
-                        <div style="margin-bottom: 1rem;">
-                            <strong>주요 안건:</strong>
-                            <ul style="margin-left: 1rem;">
-                                <li>2분기 마케팅 성과 검토</li>
-                                <li>3분기 마케팅 전략 수립</li>
-                                <li>신제품 출시 계획</li>
-                            </ul>
-                        </div>
-                        <div style="margin-bottom: 1rem;">
-                            <strong>결정 사항:</strong>
-                            <ul style="margin-left: 1rem;">
-                                <li>디지털 마케팅 예산 20% 증액</li>
-                                <li>인플루언서 마케팅 강화</li>
-                                <li>신제품 출시일 8월 15일 확정</li>
-                            </ul>
-                        </div>
-                        <div class="result-actions" style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-                            <button onclick="downloadResult()" style="padding: 0.5rem 1rem; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                <i class="fas fa-download"></i> 다운로드
-                            </button>
-                            <button onclick="retryAgent()" style="padding: 0.5rem 1rem; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                <i class="fas fa-redo"></i> 다시 실행
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                // 크레딧 차감
-                updateCreditBalance(-requiredCredits);
-                
-                alert(`AI 에이전트 실행이 완료되었습니다!\n사용된 크레딧: ${requiredCredits}`);
-            }, 3000);
-        });
+            // 크레딧 정보 업데이트
+            const creditAmountElement = document.getElementById('credit-amount');
+            if (creditAmountElement) {
+                creditAmountElement.textContent = currentUser.credits.toLocaleString();
+            }
+        }
+    } else {
+        // 로그인되지 않은 상태
+        if (guestMenu) guestMenu.style.display = 'flex';
+        if (loggedInMenu) loggedInMenu.style.display = 'none';
     }
-});
-
-// 결과 다운로드
-function downloadResult() {
-    alert('회의록이 다운로드되었습니다.');
 }
 
-// AI 에이전트 재실행
+function scrollToFeatures() {
+    const featuresSection = document.getElementById('features');
+    if (featuresSection) {
+        featuresSection.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// 로그인 처리
+function handleLogin(email, password) {
+    const user = dataManager.authenticate(email, password);
+    
+    if (user) {
+        currentUser = user;
+        isLoggedIn = true;
+        
+        // 관리자 계정 체크 및 리다이렉트
+        if (user.role === 'admin') {
+            window.location.href = 'admin.html';
+            return true;
+        } else if (user.role === 'company_admin') {
+            window.location.href = 'company-admin.html';
+            return true;
+        }
+        
+        showAlert(`환영합니다, ${user.name}님!`, 'success');
+        showDashboard();
+        updateNavigation();
+        return true;
+    } else {
+        showAlert('이메일 또는 비밀번호가 올바르지 않습니다.', 'error');
+        return false;
+    }
+}
+
+// 회원가입 처리
+function handleRegister(formData) {
+    // 입력 검증
+    if (!formData.name || !formData.email || !formData.password) {
+        showAlert('모든 필수 항목을 입력해주세요.', 'error');
+        return false;
+    }
+    
+    // 이메일 중복 체크
+    if (dataManager.getUserByEmail(formData.email)) {
+        showAlert('이미 사용 중인 이메일입니다.', 'error');
+        return false;
+    }
+    
+    // 회사 계정인 경우 추가 검증
+    if (formData.accountType === 'company') {
+        if (!formData.companyName || !formData.businessNumber) {
+            showAlert('회사명과 사업자번호를 입력해주세요.', 'error');
+            return false;
+        }
+    }
+    
+    // 기본 크레딧 설정
+    formData.credits = formData.accountType === 'company' ? 5000 : 1000;
+    
+    // 사용자 생성
+    const newUser = dataManager.createUser(formData);
+    
+    if (newUser) {
+        showAlert('회원가입이 완료되었습니다! 로그인해주세요.', 'success');
+        showLoginTab();
+        return true;
+    } else {
+        showAlert('회원가입에 실패했습니다. 다시 시도해주세요.', 'error');
+        return false;
+    }
+}
+
+// 사용자 정보 업데이트
+function updateUserInfo() {
+    if (!isLoggedIn || !currentUser) return;
+    
+    // 현재 사용자 정보 새로고침
+    const refreshedUser = dataManager.getUserById(currentUser.id);
+    if (refreshedUser) {
+        currentUser = refreshedUser;
+        localStorage.setItem('agenthub_current_user', JSON.stringify(currentUser));
+    }
+    
+    // 네비게이션의 사용자 정보 업데이트
+    updateNavigation();
+    
+    // 대시보드의 사용자 정보 업데이트 (있을 경우)
+    const userCreditsElement = document.getElementById('user-credits');
+    if (userCreditsElement) {
+        userCreditsElement.textContent = currentUser.credits.toLocaleString();
+    }
+}
+
+// 에이전트 목록 로드
+function loadAgents() {
+    const agents = dataManager.getAgents();
+    const categories = ['일반사무', '마케팅/광고', '콘텐츠 제작'];
+    
+    categories.forEach(category => {
+        const categoryAgents = agents.filter(agent => agent.category === category && agent.status === 'active');
+        const container = document.getElementById(`${getCategoryId(category)}-agents`);
+        
+        if (container) {
+            container.innerHTML = '';
+            categoryAgents.forEach(agent => {
+                const agentCard = createAgentCard(agent);
+                container.appendChild(agentCard);
+            });
+        }
+    });
+}
+
+function getCategoryId(category) {
+    const categoryMap = {
+        '일반사무': 'business',
+        '마케팅/광고': 'marketing',
+        '콘텐츠 제작': 'content'
+    };
+    return categoryMap[category] || 'other';
+}
+
+function createAgentCard(agent) {
+    const card = document.createElement('div');
+    card.className = 'agent-card';
+    card.onclick = () => openAgent(agent.id);
+    
+    card.innerHTML = `
+        <div class="agent-icon">
+            <i class="${agent.icon}"></i>
+        </div>
+        <h3>${agent.title}</h3>
+        <p>${agent.description}</p>
+        <div class="agent-info">
+            <span class="credits">${agent.credits} 크레딧</span>
+            <span class="usage">사용 ${agent.usage}회</span>
+        </div>
+        <button class="agent-btn">실행하기</button>
+    `;
+    
+    return card;
+}
+
+// 알림 시스템
+function showAlert(message, type = 'info') {
+    // 기존 알림 제거
+    const existingAlert = document.querySelector('.alert-toast');
+    const existingOverlay = document.querySelector('.alert-overlay');
+    if (existingAlert) {
+        existingAlert.remove();
+    }
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+    
+    // 오버레이 배경 생성
+    const overlay = document.createElement('div');
+    overlay.className = 'alert-overlay';
+    overlay.onclick = () => closeAlert();
+    
+    // 새 알림 생성
+    const alert = document.createElement('div');
+    alert.className = `alert-toast alert-${type}`;
+    alert.innerHTML = `
+        <div class="alert-content">
+            <i class="fas fa-${getAlertIcon(type)}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="alert-close" onclick="closeAlert()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(alert);
+    
+    // 5초 후 자동 제거
+    setTimeout(() => {
+        closeAlert();
+    }, 5000);
+}
+
+// 알림 닫기 함수
+function closeAlert() {
+    const alert = document.querySelector('.alert-toast');
+    const overlay = document.querySelector('.alert-overlay');
+    
+    if (alert) {
+        alert.style.animation = 'alertSlideOut 0.3s ease-in forwards';
+        setTimeout(() => {
+            if (alert.parentElement) {
+                alert.remove();
+            }
+        }, 300);
+    }
+    
+    if (overlay) {
+        overlay.style.animation = 'overlayFadeOut 0.3s ease-in forwards';
+        setTimeout(() => {
+            if (overlay.parentElement) {
+                overlay.remove();
+            }
+        }, 300);
+    }
+}
+
+function getAlertIcon(type) {
+    const icons = {
+        'success': 'check-circle',
+        'error': 'exclamation-circle',
+        'warning': 'exclamation-triangle',
+        'info': 'info-circle'
+    };
+    return icons[type] || 'info-circle';
+}
+
+function downloadResult() {
+    const resultContent = document.getElementById('result-content');
+    if (!resultContent) {
+        showAlert('다운로드할 결과가 없습니다.', 'warning');
+        return;
+    }
+    
+    const content = resultContent.innerText;
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `agent_result_${new Date().getTime()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    showAlert('결과가 다운로드되었습니다.', 'success');
+}
+
 function retryAgent() {
-    document.querySelector('.execute-btn').click();
+    executeAgent();
 }

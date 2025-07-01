@@ -132,18 +132,7 @@
 .header-right {
     display: flex;
     align-items: center;
-    gap: 2rem;
-}
-
-.company-credit-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #e3f2fd;
-    color: #1565c0;
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
-    font-weight: 500;
+    gap: 1rem;
 }
 
 .admin-info {
@@ -151,9 +140,24 @@
     align-items: center;
     gap: 0.5rem;
     color: #666;
-    background: #f8f9fa;
+    font-weight: 500;
+}
+
+.admin-info i {
+    color: #667eea;
+}
+
+.company-credit-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
     padding: 0.5rem 1rem;
     border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.company-credit-info strong {
+    font-weight: 700;
 }
 
 /* 섹션 */
@@ -891,6 +895,33 @@ input:checked + .slider:before {
 .btn-secondary:hover {
     background: #e9ecef;
     border-color: #ddd;
+}
+
+/* 로그아웃 버튼 */
+.logout-btn {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-left: 1rem;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.logout-btn i {
+    font-size: 0.9rem;
 }
 
 /* 반응형 디자인 */

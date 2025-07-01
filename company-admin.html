@@ -7,6 +7,213 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="company-admin-styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 화면정의 모달 스타일 -->
+    <style>
+        .screen-spec-floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .screen-spec-floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4); }
+            50% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.8); }
+            100% { box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4); }
+        }
+        
+        .screen-spec-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .screen-spec-content {
+            background: white;
+            margin: 2% auto;
+            padding: 0;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .screen-spec-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-header-action {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-header-action:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        .screen-spec-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        
+        .screen-spec-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .screen-spec-body {
+            padding: 30px;
+            line-height: 1.6;
+        }
+        
+        .spec-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .spec-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .spec-section h4 {
+            color: #5a6c7d;
+            margin: 15px 0 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .component-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .component-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .component-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .component-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .component-desc {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .tech-tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin: 2px;
+        }
+        
+        .code-snippet {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .screen-spec-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+            
+            .screen-spec-floating-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 16px;
+                font-size: 12px;
+            }
+            
+            .screen-spec-header h2 {
+                font-size: 1.1rem;
+            }
+            
+            .btn-header-action {
+                padding: 6px 8px;
+                font-size: 11px;
+            }
+            
+            .btn-header-action span {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="company-admin-layout">
@@ -64,6 +271,7 @@
             </nav>
             
             <div class="sidebar-footer">
+
                 <a href="index.html" class="back-to-main">
                     <i class="fas fa-arrow-left"></i>
                     <span>메인으로 돌아가기</span>
@@ -85,8 +293,12 @@
                     </div>
                     <div class="admin-info">
                         <i class="fas fa-user-tie"></i>
-                        <span>김관리자</span>
+                        <span id="company-admin-name">김관리자</span>
                     </div>
+                    <button onclick="companyAdminLogout()" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>로그아웃</span>
+                    </button>
                 </div>
             </header>
 
@@ -689,6 +901,406 @@
         </main>
     </div>
 
+    <!-- 화면정의 플로팅 버튼 -->
+    <button class="screen-spec-floating-btn" onclick="openScreenSpec()">
+        <i class="fas fa-file-code"></i> 화면정의
+    </button>
+
+    <!-- 화면정의 모달 -->
+    <div id="screenSpecModal" class="screen-spec-modal">
+        <div class="screen-spec-content">
+            <div class="screen-spec-header">
+                <h2><i class="fas fa-building"></i> 회사 관리자 페이지 화면정의서</h2>
+                <div class="header-buttons">
+                    <button class="btn-header-action" onclick="window.open('화면정의서-웹문서.html', '_blank')" title="전체 화면정의서 보기">
+                        <i class="fas fa-external-link-alt"></i> 전체 정의서
+                    </button>
+                    <button class="screen-spec-close" onclick="closeScreenSpec()">&times;</button>
+                </div>
+            </div>
+            <div class="screen-spec-body">
+                
+                <!-- 페이지 개요 -->
+                <div class="spec-section">
+                    <h3>📋 페이지 개요</h3>
+                    <p><strong>파일명:</strong> company-admin.html</p>
+                    <p><strong>용도:</strong> 기업 계정의 관리자가 소속 직원들의 AI 에이전트 사용을 관리하는 페이지</p>
+                    <p><strong>사용자 타입:</strong> 회사 관리자 (role: 'company_admin')</p>
+                    <p><strong>접근 권한:</strong> 자신의 회사 직원과 관련된 데이터에만 접근 가능</p>
+                    
+                    <h4>주요 기능</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">직원 관리</span>
+                            <span class="component-desc">소속 직원 목록 조회, 추가, 권한 설정</span>
+                        </li>
+                        <li>
+                            <span class="component-name">AI 에이전트 설정</span>
+                            <span class="component-desc">사용 가능한 에이전트 활성화/비활성화</span>
+                        </li>
+                        <li>
+                            <span class="component-name">크레딧 관리</span>
+                            <span class="component-desc">회사 크레딧 충전, 직원별 사용량 모니터링</span>
+                        </li>
+                        <li>
+                            <span class="component-name">사용 분석</span>
+                            <span class="component-desc">직원별 사용 패턴, 효율성 분석</span>
+                        </li>
+                        <li>
+                            <span class="component-name">비용 관리</span>
+                            <span class="component-desc">월별 사용량, 예산 관리, 리포트 생성</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- UI 컴포넌트 -->
+                <div class="spec-section">
+                    <h3>🎨 UI 컴포넌트 정의</h3>
+                    
+                    <h4>사이드바 네비게이션</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">대시보드</span>
+                            <span class="component-desc">회사 전체 현황 요약 (showSection('dashboard'))</span>
+                        </li>
+                        <li>
+                            <span class="component-name">직원 관리</span>
+                            <span class="component-desc">직원 목록, 권한 관리 (showSection('employees'))</span>
+                        </li>
+                        <li>
+                            <span class="component-name">AI 에이전트 설정</span>
+                            <span class="component-desc">에이전트 활성화 관리 (showSection('agents'))</span>
+                        </li>
+                        <li>
+                            <span class="component-name">크레딧 관리</span>
+                            <span class="component-desc">충전, 사용량 관리 (showSection('credits-manage'))</span>
+                        </li>
+                        <li>
+                            <span class="component-name">사용 분석</span>
+                            <span class="component-desc">통계, 리포트 생성 (showSection('analytics'))</span>
+                        </li>
+                    </ul>
+
+                    <h4>대시보드 통계 카드</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">총 직원 수</span>
+                            <span class="component-desc">24명 (활성 23명, 비활성 1명)</span>
+                        </li>
+                        <li>
+                            <span class="component-name">이번 달 크레딧 사용</span>
+                            <span class="component-desc">8,234 / 15,000 크레딧 (55%)</span>
+                        </li>
+                        <li>
+                            <span class="component-name">가장 많이 사용된 에이전트</span>
+                            <span class="component-desc">회의록 자동화 AI (342회)</span>
+                        </li>
+                        <li>
+                            <span class="component-name">월 사용량 증감</span>
+                            <span class="component-desc">전월 대비 +23% 증가</span>
+                        </li>
+                    </ul>
+
+                    <h4>직원 관리 테이블</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">직원 정보</span>
+                            <span class="component-desc">이름, 이메일, 부서, 직급, 가입일</span>
+                        </li>
+                        <li>
+                            <span class="component-name">사용 현황</span>
+                            <span class="component-desc">월 사용량, 누적 사용량, 최근 접속</span>
+                        </li>
+                        <li>
+                            <span class="component-name">권한 관리</span>
+                            <span class="component-desc">에이전트 접근 권한, 사용 한도 설정</span>
+                        </li>
+                    </ul>
+
+                    <h4>AI 에이전트 설정 패널</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">카테고리별 분류</span>
+                            <span class="component-desc">일반사무, 마케팅/광고, 콘텐츠 제작</span>
+                        </li>
+                        <li>
+                            <span class="component-name">토글 스위치</span>
+                            <span class="component-desc">에이전트별 활성화/비활성화 제어</span>
+                        </li>
+                        <li>
+                            <span class="component-name">비용 정보</span>
+                            <span class="component-desc">에이전트별 크레딧 비용 표시</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 기술 스펙 -->
+                <div class="spec-section">
+                    <h3>⚙️ 기술 사양</h3>
+                    
+                    <h4>필수 기술 스택</h4>
+                    <div>
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript ES6+</span>
+                        <span class="tech-tag">Chart.js</span>
+                        <span class="tech-tag">Font Awesome</span>
+                        <span class="tech-tag">LocalStorage</span>
+                    </div>
+
+                    <h4>권한 체크 로직</h4>
+                    <div class="code-snippet">
+// 회사 관리자 권한 확인
+function checkCompanyAdminAuth() {
+  const currentUser = dataManager.getCurrentUser();
+  
+  if (!currentUser || currentUser.role !== 'company_admin') {
+    alert('회사 관리자 권한이 필요합니다.');
+    window.location.href = 'index.html';
+    return false;
+  }
+  return true;
+}
+
+// 회사 직원 필터링
+function getCompanyEmployees() {
+  const currentUser = dataManager.getCurrentUser();
+  const allUsers = dataManager.getAllUsers();
+  
+  return allUsers.filter(user => 
+    user.accountType === 'company' && 
+    user.companyName === currentUser.companyName
+  );
+}
+                    </div>
+
+                    <h4>데이터 관리 인터페이스</h4>
+                    <div class="code-snippet">
+// 직원 관리 함수들
+function loadEmployees() { /* 소속 직원 목록 로드 */ }
+function addEmployee(email) { /* 직원 초대 */ }
+function setEmployeePermissions(userId, permissions) { /* 권한 설정 */ }
+function setUsageLimit(userId, limit) { /* 사용 한도 설정 */ }
+
+// 에이전트 설정 함수들
+function toggleAgentAccess(agentId, enabled) { /* 에이전트 접근 제어 */ }
+function getCompanyAgentSettings() { /* 회사 에이전트 설정 조회 */ }
+function updateAgentSettings(settings) { /* 에이전트 설정 업데이트 */ }
+                    </div>
+                </div>
+
+                <!-- 인터랙션 정의 -->
+                <div class="spec-section">
+                    <h3>🔄 인터랙션 정의</h3>
+                    
+                    <h4>직원 관리 워크플로우</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">직원 초대</span>
+                            <span class="component-desc">이메일 입력 후 초대장 발송</span>
+                        </li>
+                        <li>
+                            <span class="component-name">권한 설정</span>
+                            <span class="component-desc">에이전트별 사용 권한 체크박스</span>
+                        </li>
+                        <li>
+                            <span class="component-name">사용 한도 설정</span>
+                            <span class="component-desc">월별 크레딧 사용 한도 입력</span>
+                        </li>
+                        <li>
+                            <span class="component-name">사용량 모니터링</span>
+                            <span class="component-desc">실시간 사용량 막대 그래프</span>
+                        </li>
+                    </ul>
+
+                    <h4>크레딧 관리</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">크레딧 충전</span>
+                            <span class="component-desc">패키지 선택 후 결제 프로세스</span>
+                        </li>
+                        <li>
+                            <span class="component-name">사용량 알림</span>
+                            <span class="component-desc">80%, 90% 도달 시 자동 알림</span>
+                        </li>
+                        <li>
+                            <span class="component-name">예산 계획</span>
+                            <span class="component-desc">월별 예산 설정 및 초과 알림</span>
+                        </li>
+                    </ul>
+
+                    <h4>분석 및 리포트</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">사용 트렌드 차트</span>
+                            <span class="component-desc">Chart.js로 월별 사용량 시각화</span>
+                        </li>
+                        <li>
+                            <span class="component-name">직원별 랭킹</span>
+                            <span class="component-desc">사용량 기준 순위 표시</span>
+                        </li>
+                        <li>
+                            <span class="component-name">효율성 지표</span>
+                            <span class="component-desc">ROI, 생산성 향상 지표 계산</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 보안 및 권한 -->
+                <div class="spec-section">
+                    <h3>🔒 보안 및 권한</h3>
+                    
+                    <h4>접근 제어</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">회사 데이터 격리</span>
+                            <span class="component-desc">자신의 회사 직원 데이터만 접근 가능</span>
+                        </li>
+                        <li>
+                            <span class="component-name">관리자 권한 확인</span>
+                            <span class="component-desc">company_admin 역할 체크</span>
+                        </li>
+                        <li>
+                            <span class="component-name">데이터 필터링</span>
+                            <span class="component-desc">회사명 기준으로 데이터 필터링</span>
+                        </li>
+                    </ul>
+
+                    <h4>개인정보 보호</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">최소한의 정보</span>
+                            <span class="component-desc">업무 관련 최소한의 개인정보만 표시</span>
+                        </li>
+                        <li>
+                            <span class="component-name">사용 로그 기록</span>
+                            <span class="component-desc">관리자의 직원 데이터 접근 로그</span>
+                        </li>
+                        <li>
+                            <span class="component-name">권한 변경 추적</span>
+                            <span class="component-desc">권한 변경 이력 저장</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 개발 체크리스트 -->
+                <div class="spec-section">
+                    <h3>✅ 개발 체크리스트</h3>
+                    
+                    <h4>핵심 기능</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">✓ 회사별 데이터 격리</span>
+                            <span class="component-desc">다른 회사 데이터 접근 차단</span>
+                        </li>
+                        <li>
+                            <span class="component-name">✓ 직원 관리 시스템</span>
+                            <span class="component-desc">초대, 권한 설정, 사용량 모니터링</span>
+                        </li>
+                        <li>
+                            <span class="component-name">✓ AI 에이전트 제어</span>
+                            <span class="component-desc">회사 정책에 따른 에이전트 활성화</span>
+                        </li>
+                        <li>
+                            <span class="component-name">✓ 크레딧 관리</span>
+                            <span class="component-desc">충전, 배분, 사용량 추적</span>
+                        </li>
+                        <li>
+                            <span class="component-name">✓ 분석 대시보드</span>
+                            <span class="component-desc">사용 패턴, 효율성 분석</span>
+                        </li>
+                    </ul>
+
+                    <h4>테스트 시나리오</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">권한 분리 테스트</span>
+                            <span class="component-desc">다른 회사 데이터 접근 차단 확인</span>
+                        </li>
+                        <li>
+                            <span class="component-name">직원 관리 플로우</span>
+                            <span class="component-desc">초대부터 권한 설정까지 전체 프로세스</span>
+                        </li>
+                        <li>
+                            <span class="component-name">사용량 모니터링</span>
+                            <span class="component-desc">실시간 사용량 반영, 알림 기능</span>
+                        </li>
+                        <li>
+                            <span class="component-name">반응형 테스트</span>
+                            <span class="component-desc">관리자용 복잡한 UI의 모바일 대응</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 특별 고려사항 -->
+                <div class="spec-section">
+                    <h3>⚠️ 특별 고려사항</h3>
+                    
+                    <h4>확장성</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">대규모 직원 지원</span>
+                            <span class="component-desc">100명+ 직원도 원활한 관리 가능</span>
+                        </li>
+                        <li>
+                            <span class="component-name">페이지네이션</span>
+                            <span class="component-desc">직원 목록, 사용 기록 페이징 처리</span>
+                        </li>
+                        <li>
+                            <span class="component-name">실시간 업데이트</span>
+                            <span class="component-desc">사용량 변경 시 즉시 반영</span>
+                        </li>
+                    </ul>
+
+                    <h4>비즈니스 로직</h4>
+                    <ul class="component-list">
+                        <li>
+                            <span class="component-name">예산 초과 방지</span>
+                            <span class="component-desc">설정된 한도 초과 시 자동 차단</span>
+                        </li>
+                        <li>
+                            <span class="component-name">승인 워크플로우</span>
+                            <span class="component-desc">고비용 에이전트 사용 승인 프로세스</span>
+                        </li>
+                        <li>
+                            <span class="component-name">비용 최적화</span>
+                            <span class="component-desc">사용 패턴 분석으로 비용 절감 제안</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="data-manager.js"></script>
     <script src="company-admin-script.js"></script>
+    
+    <!-- 화면정의 모달 스크립트 -->
+    <script>
+        function openScreenSpec() {
+            document.getElementById('screenSpecModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeScreenSpec() {
+            document.getElementById('screenSpecModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('screenSpecModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeScreenSpec();
+            }
+        });
+        
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeScreenSpec();
+            }
+        });
+    </script>
 </body>
 </html>
